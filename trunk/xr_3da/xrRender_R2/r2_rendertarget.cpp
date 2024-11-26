@@ -456,7 +456,7 @@ CRenderTarget::CRenderTarget		()
 				for (u32 x=0; x<dwWidth; x++)
 				{
 					DWORD	data;
-					generate_jitter	(&data,4);
+					generate_jitter	(&data,1);
 					u32*	p	=	(u32*)	(LPBYTE (R[4].pBits) + y*R[4].Pitch + x*4);
 							*p	=	data;
 				}
