@@ -397,8 +397,8 @@ void DBG_DrawPHObject(CPHObject* obj)
 	if(ph_dbg_draw_mask.test(phDbgDrawEnabledAABBS))
 	{
 		SPHObjDBGDraw obj_draw;
-		obj_draw.AABB.set(obj->AABB);
-		obj_draw.AABB_center.set(obj->spatial.sphere.P);
+		obj_draw.m_AABB.set(obj->m_AABB);
+		obj_draw.m_AABB_center.set(obj->spatial.sphere.P);
 		if(draw_frame)
 		{
 			dbg_draw_objects0.push_back(obj_draw);
@@ -488,7 +488,7 @@ void PH_DBG_Render()
 		for(;e!=i;++i)
 		{
 			SPHObjDBGDraw& ds=*i;
-			Level().debug_renderer().draw_aabb(ds.AABB_center,ds.AABB.x,ds.AABB.y,ds.AABB.z,D3DCOLOR_XRGB(255,0,0));
+			Level().debug_renderer().draw_aabb(ds.m_AABB_center,ds.m_AABB.x,ds.m_AABB.y,ds.m_AABB.z,D3DCOLOR_XRGB(255,0,0));
 		}
 	}
 
