@@ -30,10 +30,29 @@ CUI3tButton::CUI3tButton()
 	m_bCheckMode					= false;
 	m_bWasAppliedBaseTexScaleUsing	= false;
 	SetPushOffset					(Fvector2().set(0.0f,0.0f) );
+
+	m_BtnStatic						= nullptr;
 }
 
 CUI3tButton::~CUI3tButton()
-{}
+{
+	if (m_BtnStatic)
+	{
+		DetachChild(m_BtnStatic);
+		xr_delete(m_BtnStatic);
+	}
+}
+
+void CUI3tButton::AddStatic()
+{
+	if (!m_BtnStatic)
+	{
+		m_BtnStatic = xr_new<CUIStatic>();
+		m_BtnStatic->Init(nullptr, -(GetWidth() / 2.f), 0.f, 80.f, 10.f);
+		m_BtnStatic->SetTextComplexMode(true);
+		AttachChild(m_BtnStatic);
+	}
+}
 
 void CUI3tButton::OnClick()
 {

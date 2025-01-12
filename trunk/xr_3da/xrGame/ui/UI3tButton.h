@@ -53,6 +53,8 @@ public:
 	// behavior
 	virtual void	DrawTexture					();
 	virtual void	Update						();
+	virtual void	AddStatic					();
+	CUIStatic*		GetBtnStatic				() { return m_BtnStatic; }
 	
 	//virtual void Enable(bool bEnable);	
 	virtual bool 	OnMouseAction				(float x, float y, EUIMessages mouse_action);
@@ -70,5 +72,6 @@ private:
 	virtual void	PlaySoundT					();
 
 	ref_sound			m_sound_h;
-	ref_sound			m_sound_t;	
+	ref_sound			m_sound_t;
+	CUIStatic*			m_BtnStatic;
 };
