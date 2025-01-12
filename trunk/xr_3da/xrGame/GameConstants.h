@@ -10,4 +10,5 @@ namespace GameConstants
 	bool GetMergedAmmoLineWithFiremodes		();
 	bool GetContactsBioShowing				();
 	bool GetPartnerWeightInCarBodyShowing	();
+	bool GetTrackBarValuesShowing			();
 };

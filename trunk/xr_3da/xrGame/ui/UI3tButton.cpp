@@ -13,25 +13,31 @@
 
 CUI3tButton::CUI3tButton()
 {
-	m_bTextureEnable				= false;
-	m_bUseTextColor[D]				= true;
-	m_bUseTextColor[H]				= false;
-	m_bUseTextColor[T]				= false;
+	m_bTextureEnable						= false;
+	m_bUseTextColor[D]						= true;
+	m_bUseTextColor[H]						= false;
+	m_bUseTextColor[T]						= false;
 
-	m_dwTextColor[E] 				= 0xFFFFFFFF;
-	m_dwTextColor[D] 				= 0xFFAAAAAA;
-	m_dwTextColor[H] 				= 0xFFFFFFFF;
-	m_dwTextColor[T] 				= 0xFFFFFFFF;
+	m_dwTextColor[E] 						= 0xFFFFFFFF;
+	m_dwTextColor[D] 						= 0xFFAAAAAA;
+	m_dwTextColor[H] 						= 0xFFFFFFFF;
+	m_dwTextColor[T] 						= 0xFFFFFFFF;
 
-	AttachChild						(&m_background);
-	AttachChild						(&m_hint);
+	AttachChild								(&m_background);
+	AttachChild								(&m_hint);
 
-	m_bEnableTextHighlighting		= false;
-	m_bCheckMode					= false;
-	m_bWasAppliedBaseTexScaleUsing	= false;
-	SetPushOffset					(Fvector2().set(0.0f,0.0f) );
+	m_bEnableTextHighlighting				= false;
+	m_bCheckMode							= false;
+	m_bWasAppliedBaseTexScaleUsing			= false;
+	SetPushOffset							(Fvector2().set(0.0f,0.0f));
 
-	m_BtnStatic						= nullptr;
+	m_BtnStatic								= nullptr;
+	m_BtnStaticParams.m_bNeedClrChanging	= false;
+	u32 def_clr								= color_rgba(255, 255, 255, 255);
+	m_BtnStaticParams.m_ClrStateE			= def_clr;
+	m_BtnStaticParams.m_ClrStateD			= def_clr;
+	m_BtnStaticParams.m_ClrStateT			= def_clr;
+	m_BtnStaticParams.m_ClrStateH			= def_clr;
 }
 
 CUI3tButton::~CUI3tButton()
@@ -62,8 +68,21 @@ void CUI3tButton::OnClick()
 
 bool CUI3tButton::OnMouseAction(float x, float y, EUIMessages mouse_action)
 {
-	if (mouse_action == WINDOW_LBUTTON_DOWN)
-		PlaySoundT();
+	switch (mouse_action)
+	{
+		case WINDOW_LBUTTON_DOWN:
+		{
+			PlaySoundT();
+		}
+		case WINDOW_LBUTTON_UP:
+		{
+			if (!CursorOverWindow() && IsEnabled())
+			{
+				if (m_eButtonState == BUTTON_PUSHED)
+					m_eButtonState = BUTTON_NORMAL;
+			}
+		}
+	}
 	if (m_bCheckMode)
 		return CUIWindow::OnMouseAction(x,y,mouse_action);
 	else
@@ -253,7 +272,7 @@ void CUI3tButton::Update()
 {
 	CUIButton::Update();
 
-	if(m_bTextureEnable)
+	if (m_bTextureEnable)
 	{
 		if (&m_background)
 		{
@@ -266,17 +285,26 @@ void CUI3tButton::Update()
 		}
 		if (!m_bIsEnabled)
 		{
+			if (m_BtnStatic && m_BtnStaticParams.m_bNeedClrChanging)
+				m_BtnStatic->SetTextColor(m_BtnStaticParams.m_ClrStateD);
 			m_background.SetState(S_Disabled);
 		}
 		else if (CUIButton::BUTTON_PUSHED == m_eButtonState)
 		{
+			if (m_BtnStatic && m_BtnStaticParams.m_bNeedClrChanging)
+				m_BtnStatic->SetTextColor(m_BtnStaticParams.m_ClrStateT);
 			m_background.SetState(S_Touched);
 		}
 		else if (m_bCursorOverWindow)
 		{
+			if (m_BtnStatic && m_BtnStaticParams.m_bNeedClrChanging)
+				m_BtnStatic->SetTextColor(m_BtnStaticParams.m_ClrStateH);
 			m_background.SetState(S_Highlighted);
 		}
-		else{
+		else
+		{
+			if (m_BtnStatic && m_BtnStaticParams.m_bNeedClrChanging)
+				m_BtnStatic->SetTextColor(m_BtnStaticParams.m_ClrStateE);
 			m_background.SetState(S_Enabled);
 		}
 	}
@@ -307,4 +335,24 @@ void CUI3tButton::Update()
 
 	CUIStatic::SetTextColor		(textColor);
 	m_hint.SetTextColor			(hintColor);
+}
+
+void CUI3tButton::SetBtnStaticClrE(u32 clr)
+{
+	m_BtnStaticParams.m_ClrStateD = clr;
+}
+
+void CUI3tButton::SetBtnStaticClrD(u32 clr)
+{
+	m_BtnStaticParams.m_ClrStateD = clr;
+}
+
+void CUI3tButton::SetBtnStaticClrT(u32 clr)
+{
+	m_BtnStaticParams.m_ClrStateT = clr;
+}
+
+void CUI3tButton::SetBtnStaticClrH(u32 clr)
+{
+	m_BtnStaticParams.m_ClrStateH = clr;
 }

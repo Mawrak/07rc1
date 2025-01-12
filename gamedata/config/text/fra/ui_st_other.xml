@@ -12,6 +12,12 @@
 	<string id="st_mp_direct_ip">
 		<text>Adresse IP directe</text>
 	</string>
+	<string id="st_track_opt_off">
+		<text>éte.</text>
+	</string>
+	<string id="st_track_opt_on">
+		<text>allu.</text>
+	</string>
 	<string id="ui_mm_default">
 		<text>Défaut</text>
 	</string>

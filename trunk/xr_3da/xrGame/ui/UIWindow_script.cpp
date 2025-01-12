@@ -234,6 +234,9 @@ void CUIWindow::script_register(lua_State *L)
 
 	// CUIScrollBox
 				value("SCROLLBOX_MOVE",					int(SCROLLBOX_MOVE)),
+
+	// CUITrackBar
+				value("TRACK_MOVE",						int(TRACK_MOVE)),
 				
 	// CUIScrollBar
 				value("SCROLLBAR_VSCROLL",				int(SCROLLBAR_VSCROLL)),

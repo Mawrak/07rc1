@@ -8,6 +8,8 @@ public:
 	virtual					~CUIOptionsItem		();
 	virtual void			Register			(const char* entry, const char* group);
 	static CUIOptionsManager* GetOptionsManager	() {return &m_optionsManager;}
+	IC		LPCSTR			GetEntry			() const { return m_entry.c_str(); }
+			xr_token*		GetOptToken			();
 protected:
 	virtual void			SetCurrentValue		()	=0;	
 	virtual void			SaveValue			();
@@ -34,7 +36,6 @@ protected:
 			void			SaveOptBoolValue	(bool val);
 			// token
 			LPCSTR			GetOptTokenValue	();
-			xr_token*		GetOptToken			();
 			void			SaveOptTokenValue	(const char* val);
 
 	xr_string		m_entry;

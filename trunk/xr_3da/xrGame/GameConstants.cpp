@@ -11,6 +11,7 @@ bool	m_bDisableStoppingGrenade			= true;
 bool	m_bMergeAmmoLineWithFiremode		= true;
 bool	m_bShowContactBio					= false;
 bool	m_bShowPartnerWeightInCarBody		= false;
+bool	m_bShowTrackBarValues				= false;
 
 namespace GameConstants
 {
@@ -27,6 +28,7 @@ namespace GameConstants
 		m_bMergeAmmoLineWithFiremode		= READ_IF_EXISTS(pConstantsSettings, r_bool, "gameplay", "merge_ammo_line_with_firemode", true);
 		m_bShowContactBio					= READ_IF_EXISTS(pConstantsSettings, r_bool, "ui_settings", "show_contact_bio", false);
 		m_bShowPartnerWeightInCarBody		= READ_IF_EXISTS(pConstantsSettings, r_bool, "ui_settings", "show_partner_weight_in_carbody", false);
+		m_bShowTrackBarValues				= READ_IF_EXISTS(pConstantsSettings, r_bool, "ui_settings", "show_track_bar_values", false);
 
 		Msg("# GameConstants are loaded");
 	}
@@ -59,5 +61,10 @@ namespace GameConstants
 	bool GetPartnerWeightInCarBodyShowing()
 	{
 		return m_bShowPartnerWeightInCarBody;
+	}
+
+	bool GetTrackBarValuesShowing()
+	{
+		return m_bShowTrackBarValues;
 	}
 }

@@ -11,7 +11,7 @@
 #include "UIButton.h"
 #include "UIIBStatic.h"
 
-class CUI3tButton : public CUIButton 
+class CUI3tButton : public CUIButton
 {
 	friend class CUIXmlInit;
 	using CUIButton::SetTextColor;
@@ -41,19 +41,24 @@ public:
 	virtual void 	SetHeight					(float height);
 	virtual void 	InitSoundH					(LPCSTR sound_file);
 	virtual void 	InitSoundT					(LPCSTR sound_file);
+	virtual void 	SetBtnStaticClrE			(u32 clr);
+	virtual void 	SetBtnStaticClrD			(u32 clr);
+	virtual void 	SetBtnStaticClrT			(u32 clr);
+	virtual void 	SetBtnStaticClrH			(u32 clr);
 
 	virtual void 	OnClick						();
 	virtual void 	OnFocusReceive				();
 	virtual void	OnFocusLost					();
 
 	// check button
-	bool			GetCheck					() {return m_eButtonState == BUTTON_PUSHED;}
+	bool			GetCheck					() const {return m_eButtonState == BUTTON_PUSHED;}
 	void			SetCheck					(bool ch) {m_eButtonState = ch ? BUTTON_PUSHED : BUTTON_NORMAL;}
 	
 	// behavior
 	virtual void	DrawTexture					();
 	virtual void	Update						();
 	virtual void	AddStatic					();
+	virtual void	SetStaticColorChanging		(bool status) { m_BtnStaticParams.m_bNeedClrChanging = status; }
 	CUIStatic*		GetBtnStatic				() { return m_BtnStatic; }
 	
 	//virtual void Enable(bool bEnable);	
@@ -61,12 +66,20 @@ public:
 	virtual bool 	OnMouseDown					(int mouse_btn);
 			void 	SetCheckMode				(bool mode) {m_bCheckMode = mode;}
 
-
 	CUIStatic			m_hint;
 	CUIIBStatic			m_background;
 protected:
 	bool				m_bCheckMode;
 	bool				m_bWasAppliedBaseTexScaleUsing;
+	struct sBtnStaticParams
+	{
+		bool			m_bNeedClrChanging;
+		u32				m_ClrStateE;
+		u32				m_ClrStateD;
+		u32				m_ClrStateT;
+		u32				m_ClrStateH;
+	};
+	sBtnStaticParams m_BtnStaticParams;
 private:	
 	virtual void	PlaySoundH					();
 	virtual void	PlaySoundT					();

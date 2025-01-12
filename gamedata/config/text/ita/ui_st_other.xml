@@ -9,6 +9,12 @@
 	<string id="st_drink">
 		<text>bevi</text>
 	</string>
+	<string id="st_track_opt_off">
+		<text>speg.</text>
+	</string>
+	<string id="st_track_opt_on">
+		<text>acce.</text>
+	</string>
 	<string id="st_mp_direct_ip">
 		<text>IP diretto</text>
 	</string>

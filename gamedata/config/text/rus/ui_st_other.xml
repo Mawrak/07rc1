@@ -9,6 +9,12 @@
 	<string id="st_drink">
 		<text>выпить</text>
 	</string>
+	<string id="st_track_opt_off">
+		<text>выкл.</text>
+	</string>
+	<string id="st_track_opt_on">
+		<text>вкл.</text>
+	</string>
 	<string id="st_mp_direct_ip">
 		<text>Прямой IP</text>
 	</string>

@@ -9,6 +9,12 @@
 	<string id="st_drink">
 		<text>pij</text>
 	</string>
+	<string id="st_track_opt_off">
+		<text>wyí¹c.</text>
+	</string>
+	<string id="st_track_opt_on">
+		<text>wí¹c.</text>
+	</string>
 	<string id="st_mp_direct_ip">
 		<text>Adres IP</text>
 	</string>

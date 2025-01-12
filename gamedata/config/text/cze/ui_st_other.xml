@@ -9,6 +9,12 @@
 	<string id="st_drink">
 		<text>vypít</text>
 	</string>
+	<string id="st_track_opt_off">
+		<text>vyp.</text>
+	</string>
+	<string id="st_track_opt_on">
+		<text>zap.</text>
+	</string>
 	<string id="st_mp_direct_ip">
 		<text>Pøímé IP</text>
 	</string>

@@ -9,6 +9,12 @@
 	<string id="st_drink">
 		<text>Trinken</text>
 	</string>
+	<string id="st_track_opt_off">
+		<text>schalt.</text>
+	</string>
+	<string id="st_track_opt_on">
+		<text>mach.</text>
+	</string>
 	<string id="st_mp_direct_ip">
 		<text>Direktverbindung</text>
 	</string>
