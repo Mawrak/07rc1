@@ -119,6 +119,13 @@ ref_shader& CUIStatic::GetShader()
 
 void CUIStatic::InitTextureEx(LPCSTR tex_name, LPCSTR sh_name)
 {
+	if (!tex_name || !xr_strlen(tex_name))
+	{
+		m_bTextureEnable = false;
+		m_bAvailableTexture = false;
+
+		return;
+	}
 
 	string_path buff;
 	u32		v_dev	= CAP_VERSION(HW.Caps.raster_major, HW.Caps.raster_minor);
@@ -131,6 +138,7 @@ void CUIStatic::InitTextureEx(LPCSTR tex_name, LPCSTR sh_name)
 	Fvector2 p						= GetWndPos();
 	m_UIStaticItem.SetPos			(p.x, p.y);
 	m_bAvailableTexture				= true;
+	m_bTextureEnable				= true;
 }
 
 void  CUIStatic::Draw()
