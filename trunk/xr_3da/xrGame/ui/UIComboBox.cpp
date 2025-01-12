@@ -286,7 +286,7 @@ void CUIComboBox::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	}
 }
 
-void CUIComboBox::SeveBackUpValue()
+void CUIComboBox::SaveBackUpValue()
 {
 	m_backup_itoken_id = m_itoken_id;
 }

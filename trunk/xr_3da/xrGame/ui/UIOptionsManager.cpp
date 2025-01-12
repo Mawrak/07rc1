@@ -60,7 +60,7 @@ void CUIOptionsManager::SeveBackupValues(const char* group)
 	R_ASSERT3(m_groups.end() != it, "invalid group name",group);
 
 	for (u32 i = 0; i < (*it).second.size(); i++){
-		(*it).second[i]->SeveBackUpValue();
+		(*it).second[i]->SaveBackUpValue();
 	}
 }
 
@@ -71,7 +71,7 @@ void CUIOptionsManager::SetCurrentValues(const char* group){
 
 	for (u32 i = 0; i < (*it).second.size(); i++){
 		(*it).second[i]->SetCurrentValue();
-//.		(*it).second[i]->SeveBackUpValue();
+//.		(*it).second[i]->SaveBackUpValue();
 	}
 }
 

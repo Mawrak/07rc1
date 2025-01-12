@@ -12,14 +12,7 @@
 #define FRAME_LINE_TEXTURE_D	"ui_slider_d"
 #define SLIDER_TEXTURE			"ui_slider_button"
 
-CUITrackBar::CUITrackBar()
-	: m_f_min(0),
-	  m_f_max(1),
-	  m_f_val(0),
-	  m_f_back_up(0),
-	 m_f_step(0.01f),
-	m_b_is_float(true),
-	m_b_invert(false)
+CUITrackBar::CUITrackBar() : m_f_min(0), m_f_max(1.f), m_f_val(0.f), m_f_back_up(0.f), m_i_back_up(0), m_f_step(0.01f), m_b_is_float(true), m_b_invert(false)
 {	
 	m_pFrameLine					= xr_new<CUIFrameLineWnd>();	
 	AttachChild						(m_pFrameLine);	
@@ -110,7 +103,7 @@ void CUITrackBar::SetStep(float step)
 		m_i_step	= iFloor(step);
 }
 
-void CUITrackBar::SeveBackUpValue()
+void CUITrackBar::SaveBackUpValue()
 {
 	if(m_b_is_float)
 		m_f_back_up		= m_f_val;
