@@ -641,7 +641,7 @@ local info_by_rank = {
 					"encyclopedy_social_stalker-clans_bandits"
 					},
 
-		stalker = {	"encyclopedy_zone_artifact_af-medusa",
+		experienced = {	"encyclopedy_zone_artifact_af-medusa",
 					"encyclopedy_zone_artifact_af-cristall-flower",
 					"encyclopedy_zone_artifact_af-night-star",
 					"encyclopedy_zone_artifact_af-vyvert",
