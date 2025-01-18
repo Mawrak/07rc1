@@ -6,6 +6,7 @@
 #include "../igame_level.h"
 #include "clsid_game.h"
 #include "GamePersistent.h"
+#include "ui/UIArtefactPanel.h"
 
 
 CFontManager::CFontManager()
@@ -277,6 +278,15 @@ void CHUDManager::OnScreenResolutionChanged()
 	pUI->UnLoad							();
 	pUI->Load							(pUI->UIGame());
 	pUI->OnConnected					();
+	GetUICursor()->OnScreenResolutionChanged();
+
+	if (IsGameTypeSingle() && Level().CurrentViewEntity() && pUI->UIMainIngameWnd->m_artefactPanel)
+	{
+		CActor* actor = smart_cast<CActor*>(Level().CurrentViewEntity());
+
+		if (actor)
+			pUI->UIMainIngameWnd->m_artefactPanel->InitIcons(actor->ArtefactsOnBelt());
+	}
 }
 
 void CHUDManager::OnDisconnected()
