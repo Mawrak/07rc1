@@ -2,6 +2,11 @@
 # Set default behavior to automatically normalize line endings.
 ###############################################################################
 * text=auto
+*.ltx linguist-detectable
+*.ltx text eol=crlf encoding=cp1251 linguist-language=INI github-language=INI
+*.ltx text eol=crlf encoding=cp1251 linguist-language=INI gitlab-language=INI
+*.ltx text eol=crlf encoding=utf-8 linguist-language=INI github-language=INI
+*.ltx text eol=crlf encoding=utf-8 linguist-language=INI gitlab-language=INI
 
 ###############################################################################
 # Set default behavior for command prompt diff.
