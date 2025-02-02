@@ -24,6 +24,12 @@ void lanim_cont::set_defaults()
 	m_lanimFlags.zero		();
 }
 
+void lanim_cont_xf::set_defaults()
+{
+	lanim_cont::set_defaults();
+	m_origSize.set			(0,0);
+}
+
 CUIStatic::CUIStatic()
 {
 	m_bAvailableTexture			= false;
@@ -44,6 +50,7 @@ CUIStatic::CUIStatic()
 
 	m_bCursorOverWindow			= false;
 	m_bHeading					= false;
+	m_bConstHeading			= false;
 	m_fHeading					= 0.0f;
 	m_lanim_clr.set_defaults	();
 	m_lanim_xform.set_defaults	();
@@ -67,6 +74,7 @@ void CUIStatic::SetXformLightAnim(LPCSTR lanim, bool bCyclic)
 	m_lanim_xform.m_lanimFlags.zero		();
 
 	m_lanim_xform.m_lanimFlags.set		(LA_CYCLIC, bCyclic);
+	m_lanim_xform.m_origSize			= GetWndSize();
 }
 
 void CUIStatic::SetClrLightAnim(LPCSTR lanim, bool bCyclic, bool bOnlyAlpha, bool bTextColor, bool bTextureColor)
@@ -84,6 +92,21 @@ void CUIStatic::SetClrLightAnim(LPCSTR lanim, bool bCyclic, bool bOnlyAlpha, boo
 	m_lanim_clr.m_lanimFlags.set		(LA_TEXTURECOLOR,	bTextureColor);
 }
 
+void CUIStatic::SetClrLightAnim(LPCSTR lanim, u8 const& flags, float delay)
+{
+	if (lanim && lanim[0] != 0)
+		m_lanim_clr.m_lanim = LALib.FindItem(lanim);
+	else
+	{
+		m_lanim_clr.m_lanim = NULL;
+		return;
+	}
+
+	m_lanim_clr.m_lanim_delay_time = delay;
+	m_lanim_clr.m_lanimFlags.assign(flags);
+	R_ASSERT((m_lanim_clr.m_lanim == NULL) || m_lanim_clr.m_lanimFlags.test(LA_TEXTCOLOR | LA_TEXTURECOLOR));
+}
+
 void CUIStatic::Init(LPCSTR tex_name, float x, float y, float width, float height)
 {
 	Init(x, y, width, height);
@@ -99,7 +122,6 @@ void CUIStatic::InitEx(LPCSTR tex_name, LPCSTR sh_name, float x, float y, float 
 void CUIStatic::Init(float x, float y, float width, float height)
 {
 	CUIWindow::Init(x, y, width, height);
-	m_xxxRect.set(x, y, x + width, y + height);
 }
 
 void CUIStatic::InitTexture(LPCSTR texture)
@@ -182,9 +204,9 @@ void CUIStatic::DrawText()
 		{
 			Fvector2			p;
 			GetAbsolutePos		(p);
-			m_pLines->Draw		(p.x + m_TextOffset.x, p.y + m_TextOffset.y);
+			p.add				(m_TextOffset);
+			m_pLines->Draw		(p.x, p.y);
 		}
-
 	}
 }
 
@@ -198,6 +220,17 @@ void CUIStatic::DrawTexture()
 
 		if (m_bStretchTexture)
 		{
+			if (Heading())
+			{
+				if (m_UIStaticItem.GetFixedLTWhileHeading())
+				{
+					float t1, t2;
+					t1 = rect.width();
+					t2 = rect.height();
+					rect.y2 = rect.y1 + t1;
+					rect.x2 = rect.x1 + t2;
+				}
+			}
 			if (GetScaleTexUsing())
 			{
 				rect = m_UIStaticItem.GetBaseTextureRect();
@@ -209,10 +242,17 @@ void CUIStatic::DrawTexture()
 		else
 		{
 			Frect r = { 0.0f,0.0f,
-				m_UIStaticItem.GetOriginalRectScaled().width(),
-				m_UIStaticItem.GetOriginalRectScaled().height() };
-			if (r.width() && r.height())
-				m_UIStaticItem.SetRect(r);
+				m_UIStaticItem.GetOriginalRect().width(),
+				m_UIStaticItem.GetOriginalRect().height() };
+
+			if (Heading())
+			{
+				float t1 = rect.width();
+				float t2 = rect.height();
+				rect.y2 = rect.y1 + t1;
+				rect.x2 = rect.x1 + t2;
+			}
+			m_UIStaticItem.SetRect(r);
 		}
 
 		if (Heading())
@@ -280,13 +320,13 @@ void CUIStatic::Update()
 			
 			float f_scale		= _value / 64.0f;
 			Fvector2 _sz;
-			_sz.set				(m_xxxRect.width() * f_scale, m_xxxRect.height() * f_scale);
+			_sz.set				(m_lanim_xform.m_origSize.x*f_scale, m_lanim_xform.m_origSize.y*f_scale );
 			SetWndSize			(_sz);
 		}
 		else
 		{
 			EnableHeading_int	(!!m_lanim_xform.m_lanimFlags.test(1 << 4));
-			SetWndSize			(Fvector2().set(m_xxxRect.width(),m_xxxRect.height()));
+			SetWndSize			(m_lanim_xform.m_origSize);
 		}
 	}
 }
@@ -342,6 +382,12 @@ void CUIStatic::SetTextComplexMode(bool md)
 {
 	CREATE_LINES;
 	m_pLines->SetTextComplexMode(md);
+}
+
+bool CUIStatic::GetTextComplexMode()
+{
+	CREATE_LINES;
+	return m_pLines->GetTextComplexMode();
 }
 
 CGameFont* CUIStatic::GetFont()
@@ -406,12 +452,12 @@ void CUIStatic::TextureClipper(float offset_x, float offset_y, Frect* pClipRect,
 	{
 		Frect r;
 		r.x1 = out_rect.left;
-		r.x2 = out_rect.right < UIStaticItem.GetOriginalRectScaled().width() ?
-			out_rect.right : UIStaticItem.GetOriginalRectScaled().width();
+		r.x2 = out_rect.right < UIStaticItem.GetOriginalRect().width() ?
+			out_rect.right : UIStaticItem.GetOriginalRect().width();
 
 		r.y1 = out_rect.top;
-		r.y2 = out_rect.bottom < UIStaticItem.GetOriginalRectScaled().height() ?
-			out_rect.bottom : UIStaticItem.GetOriginalRectScaled().height();
+		r.y2 = out_rect.bottom < UIStaticItem.GetOriginalRect().height() ?
+			out_rect.bottom : UIStaticItem.GetOriginalRect().height();
 
 		UIStaticItem.SetRect(r);
 	}
@@ -437,12 +483,12 @@ void CUIStatic::ClipperOff(CUIStaticItem& UIStaticItem)
 	
 	Frect r;
 	r.x1 = out_rect.left;
-	r.x2 = out_rect.right < UIStaticItem.GetOriginalRectScaled().width() ?
-		   out_rect.right : UIStaticItem.GetOriginalRectScaled().width();
+	r.x2 = out_rect.right < UIStaticItem.GetOriginalRect().width() ?
+		   out_rect.right : UIStaticItem.GetOriginalRect().width();
 
 	r.y1 = out_rect.top;
-	r.y2 = out_rect.bottom < UIStaticItem.GetOriginalRectScaled().height() ?
-		   out_rect.bottom : UIStaticItem.GetOriginalRectScaled().height();
+	r.y2 = out_rect.bottom < UIStaticItem.GetOriginalRect().height() ?
+		   out_rect.bottom : UIStaticItem.GetOriginalRect().height();
 	UIStaticItem.SetRect(r);
 }
 
@@ -557,7 +603,8 @@ void CUIStatic::SetMask(CUIFrameWindow *pMask)
 	}
 }
 
-//CGameFont::EAligment CUIStatic::GetTextAlign(){
+//CGameFont::EAligment CUIStatic::GetTextAlign()
+//{
 //	return m_pLines->GetTextAlignment();
 //}
 
@@ -566,7 +613,8 @@ CGameFont::EAligment CUIStatic::GetTextAlignment()
 	return m_pLines->GetTextAlignment();
 }
 
-//void CUIStatic::SetTextAlign(CGameFont::EAligment align){
+//void CUIStatic::SetTextAlign(CGameFont::EAligment align)
+//{
 //	CREATE_LINES;
 //	m_pLines->SetTextAlignment(align);
 //}
@@ -576,6 +624,11 @@ void CUIStatic::SetTextAlignment(CGameFont::EAligment align)
 	CREATE_LINES;
 	m_pLines->SetTextAlignment(align);
 	m_pLines->GetFont()->SetAligment((CGameFont::EAligment)align);
+}
+
+EVTextAlignment CUIStatic::GetVTextAlignment() const 
+{ 
+	return m_pLines->GetVTextAlignment(); 
 }
 
 void CUIStatic::SetVTextAlignment(EVTextAlignment al)
@@ -588,6 +641,7 @@ void CUIStatic::SetTextAlign_script(u32 align)
 {
 	m_pLines->SetTextAlignment((CGameFont::EAligment)align);
 	m_pLines->GetFont()->SetAligment((CGameFont::EAligment)align);
+	SetTextAlignment((CGameFont::EAligment)align);
 }
 
 u32 CUIStatic::GetTextAlign_script()
@@ -648,39 +702,6 @@ void CUIStatic::AdjustWidthToText()
 	float _len		= m_pLines->GetFont()->SizeOf_(m_pLines->GetText());
 	UI()->ClientToScreenScaledWidth(_len);
 	SetWidth		(_len);
-}
-
-void CUIStatic::RescaleRelative2Rect(const Frect& r)
-{
-	SetStretchTexture(true);
-	Frect my_r = m_xxxRect;
-	float h_rel = my_r.width() / r.width();
-	float v_rel = my_r.height() / r.height();
-
-	if (ui_core::is_16_9_mode())
-	{
-		h_rel	*= (3.0f / 4.0f);
-	}
-	
-	float w;
-	float h;
-	if (h_rel < v_rel)
-	{
-		w = r.width() * h_rel;
-		h = r.height() * h_rel;
-	}
-	else
-	{
-		w = r.width() * v_rel;
-		h = r.height() * v_rel;
-	}
-
-
-	my_r.x1 += (m_xxxRect.width() - w) / 2;
-	my_r.y1 += (m_xxxRect.height() - h) / 2;
-	my_r.x2 = my_r.x1 + w;
-	my_r.y2 = my_r.y1 + h;
-	SetWndRect(my_r);
 }
 
 void CUIStatic::SetTextST				(LPCSTR str_id)

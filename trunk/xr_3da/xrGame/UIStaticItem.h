@@ -14,10 +14,8 @@ class CUIStaticItem: public IUISimpleTextureControl, public CUICustomItem
 	Fvector2		iPos;
 	u32				dwColor;
 	u32				dwBaseColor;
-	int				iTileX;
-	int				iTileY;
-	float			iRemX;
-	float			iRemY;
+	Ivector2		iTile;
+	Fvector2		iRem;
 	int				alpha_ref;
 protected:
 	typedef CUICustomItem inherited;
@@ -33,8 +31,10 @@ public:
 			void	SetAlphaRef				(int val)											{alpha_ref=val;};
 	virtual void	CreateShader			(const char* tex, const char* sh = "hud\\default");
 	virtual void	SetShader				(const ref_shader& sh);
-	virtual	void	SetOriginalRect			(const Frect& r)									{iOriginalRect = r; uFlags|=flValidOriginalRect;}
-	virtual void	SetOriginalRectEx		(const Frect& r)									{iOriginalRect = r; BaseTextureRect = r; uFlags|=flValidOriginalRect; SetRect(0,0,r.width(),r.height());}
+	virtual	void	SetOriginalRect	(const Frect& r)									{iOriginalRect = r; uFlags.set(flValidOriginalRect,TRUE);}
+	virtual void	SetOriginalRectEx(const Frect& r)									{iOriginalRect = r; uFlags.set(flValidOriginalRect,TRUE); SetRect(0,0,r.width(),r.height());}
+
+	virtual const Frect& GetOriginalRect() const										{return iOriginalRect;}
 
 
 	void			Init					(LPCSTR tex, LPCSTR sh, float left, float top, u32 align);
@@ -44,7 +44,11 @@ public:
 	void			Render					();
 	void			Render					(float angle);
 
-	IC void			SetTile					(int tile_x, int tile_y, float rem_x, float rem_y){iTileX=tile_x;iTileY=tile_y;iRemX=rem_x;iRemY=rem_y;}
+	IC void			SetTile			(int tile_x, int tile_y, float rem_x, float rem_y)
+	{
+		//R_ASSERT((tile_x>=0)&&(tile_y>=0)&&(rem_x>=0)&&(rem_y>=0));
+		iTile.x=tile_x;iTile.y=tile_y;iRem.x=rem_x;iRem.y=rem_y;
+	}
 	IC void			SetPos					(float left, float top)			{iPos.set(left,top);}
 	IC void			SetPosX					(float left)					{iPos.x = left;}
 	IC void			SetPosY					(float top)						{iPos.y = top;}

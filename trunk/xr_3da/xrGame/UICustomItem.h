@@ -20,39 +20,43 @@ class CUICustomItem
 {
 protected:
 	enum {
-		flValidRect				=0x0001,
-		flValidOriginalRect		=0x0002,
-		flValidHeadingPivot		=0x0004,
+		flValidRect				=(1<<0),
+		flValidOriginalRect		=(1<<1),
+		flValidHeadingPivot		=(1<<2),
+		flFixedLTWhileHeading	=(1<<3),
 	};
 
 	//прямоугольник(в пикселях) 
-	//геом. регион  на который натягикается текстура с текстурными координатами iOriginalRect
+	//геом. регион  на который натягивается текстура с текстурными координатами iOriginalRect
 	Frect			iVisRect;
 
 	//фрейм текстуры в пикселях отн. 0/0
 	Frect			iOriginalRect;
 	Frect			BaseTextureRect;
 
-	// точка, относительно которой примен¤ем поворот
+	// точка, относительно которой применяем поворот
 	Fvector2		iHeadingPivot;
+	Fvector2		iHeadingOffset;
 
-	u32				uFlags;
+	Flags32			uFlags;
 	u32				uAlign;
 	EUIMirroring	eMirrorMode;
 
 public:
 					CUICustomItem			();
 	virtual			~CUICustomItem			();
-	IC void			SetRect					(float x1, float y1, float x2, float y2){iVisRect.set(x1,y1,x2,y2); uFlags|=flValidRect; }
-	IC void			SetRect					(const Frect& r){iVisRect.set(r); uFlags|=flValidRect; }
+	IC void			SetRect					(float x1, float y1, float x2, float y2){iVisRect.set(x1,y1,x2,y2); uFlags.set(flValidRect, TRUE); }
+	IC void			SetRect					(const Frect& r){iVisRect.set(r); uFlags.set(flValidRect, TRUE); }
 	  void			SetOriginalRect			(float x, float y, float width, float height);
 
 	IC Frect		GetRect					() {return iVisRect;}
 	   Frect		GetOriginalRect			() const;
-	   Frect		GetOriginalRectScaled	();
+	   Frect		GetOriginalRect	();
 	
-	   void			SetHeadingPivot			(const Fvector2& p)		{iHeadingPivot=p; uFlags|=flValidHeadingPivot;}
-	   Fvector2		GetHeadingPivot			()						{return iHeadingPivot;}
+	   void			SetHeadingPivot			(const Fvector2& p, const Fvector2& offset, bool fixedLT);
+	   void			ResetHeadingPivot		();
+	   IC bool		GetFixedLTWhileHeading	() const								{return !!uFlags.test(flFixedLTWhileHeading);}
+	   Fvector2		GetHeadingPivot			()										{return iHeadingPivot;}
 	   
 
 	void			Render					(FVF::TL*& Pointer, const Fvector2& pos, u32 color, 

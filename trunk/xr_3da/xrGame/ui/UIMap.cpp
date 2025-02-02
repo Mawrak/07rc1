@@ -181,11 +181,11 @@ void CUICustomMap::SetActivePoint(const Fvector &vNewPoint)
 	pos_abs.add(pos_on_map);
 
 	Frect		clip_abs_rect	= GetClipperRect();
-	Fvector2	clip_center;
-	clip_abs_rect.getcenter(clip_center);
-	clip_center.sub(pos_abs);
+	Fvector2	clip_center{};
+	clip_abs_rect.getcenter		(clip_center);
+	clip_center.sub				(pos_abs);
 	MoveWndDelta				(clip_center);
-	SetHeadingPivot				(pos_on_map);
+	SetHeadingPivot				(pos_on_map, Fvector2().set(0, 0), false);
 }
 
 bool CUICustomMap::IsRectVisible(Frect r)
@@ -524,7 +524,7 @@ CUIMiniMap::~CUIMiniMap()
 void CUIMiniMap::Init(shared_str name, CInifile& gameLtx, LPCSTR sh_name)
 {
 	inherited::Init(name, gameLtx, sh_name);
-	CUIStatic::SetTextureColor(0x7fffffff);
+	//CUIStatic::SetTextureColor(0x7fffffff);
 }
 
 void CUIMiniMap::UpdateSpots()

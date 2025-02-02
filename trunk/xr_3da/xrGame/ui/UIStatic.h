@@ -10,12 +10,18 @@ class CLAItem;
 class CUIXml;
 class CUILines;
 
-struct lanim_cont{
+struct lanim_cont
+{
 	CLAItem*				m_lanim;
 	float					m_lanim_start_time;
 	float					m_lanim_delay_time;
 	Flags8					m_lanimFlags;
+	void					set_defaults		();
+};
 
+struct lanim_cont_xf :public lanim_cont
+{
+	Fvector2				m_origSize;
 	void					set_defaults		();
 };
 
@@ -26,7 +32,7 @@ class CUIStatic : public CUIWindow, public CUISingleTextureOwner, public IUIText
 private:
 	typedef CUIWindow inherited;
 	lanim_cont				m_lanim_clr;
-	lanim_cont				m_lanim_xform;
+	lanim_cont_xf			m_lanim_xform;
 	void					EnableHeading_int		(bool b)				{m_bHeading = b;}
 public:
 	using CUISimpleWindow::SetWndRect;
@@ -38,16 +44,13 @@ public:
 	virtual void	Init					(float x, float y, float width, float height);
 	virtual void	Draw					();
 	virtual void	Update					();
-	//
-			void	RescaleRelative2Rect(const Frect& r);	//need to save proportions of texture			
 
 	// IUISingleTextureOwner--------------------------------------------------------------------------------
 	virtual void		CreateShader				(const char* tex, const char* sh = "hud\\default");
 	virtual ref_shader& GetShader					();
 	virtual void		SetOriginalRect				(const Frect& r)			{m_UIStaticItem.SetOriginalRect(r);}
 	virtual void		SetOriginalRectEx			(const Frect& r)			{m_UIStaticItem.SetOriginalRectEx(r);}
-	//
-			void		SetVTextAlignment			(EVTextAlignment al);
+
 	virtual void		SetTextureColor				(u32 color)					{ m_UIStaticItem.SetTextureColor(color);		}
 	u32					GetTextureColor				() const					{ return m_UIStaticItem.GetTextureColor();		}
 	u32&				GetTextureColorRef			()							{ return m_UIStaticItem.GetTextureColorRef();	}
@@ -59,7 +62,7 @@ public:
 	CUIStaticItem*		GetStaticItem				()							{return &m_UIStaticItem;}
 			void		SetOriginalRect				(float x, float y, float width, float height)	{m_UIStaticItem.SetOriginalRect(x,y,width,height);}
 	virtual Frect		GetBaseTexRect				() const { return m_UIStaticItem.GetBaseTextureRect(); }
-			void		SetHeadingPivot				(const Fvector2& p)			{m_UIStaticItem.SetHeadingPivot(p);}
+			void		SetHeadingPivot				(const Fvector2& p, const Fvector2& offset, bool fixedLT)				{m_UIStaticItem.SetHeadingPivot(p,offset,fixedLT);}
 			void		SetMask						(CUIFrameWindow *pMask);
 	virtual void		SetTextureOffset			(float x, float y) { m_TextureOffset.set(x, y); }
 	virtual void		SetBaseTextureOffset		(float x, float y) { m_TextureOffset.set(x, y); m_BaseTextureOffset.set(x, y); }
@@ -77,6 +80,7 @@ public:
 	virtual void		SetHighlightColor			(const u32 uColor)	{ m_HighlightColor = uColor; }
 			void		EnableTextHighlighting		(bool value)		{ m_bEnableTextHighlighting = value; }
 			void		SetClrLightAnim				(LPCSTR lanim, bool bCyclic, bool bOnlyAlpha, bool bTextColor, bool bTextureColor);
+			void		SetClrLightAnim				(LPCSTR lanim, u8 const& flags, float delay = 0.0f);
 			void		SetXformLightAnim			(LPCSTR lanim, bool bCyclic);
 			void		ResetClrAnimation			();
 			void		DisableColorAnimation		();
@@ -105,9 +109,12 @@ public:
 	virtual CGameFont*		GetFont					();
 	virtual void			SetTextAlignment		(ETextAlignment alignment);
 	virtual ETextAlignment	GetTextAlignment		();
+			void			SetVTextAlignment		(EVTextAlignment al);
+			EVTextAlignment	GetVTextAlignment		() const;
 
 	// text additional
 			void			SetTextComplexMode		(bool md);
+			bool			GetTextComplexMode		();
 			void			SetTextAlign_script		(u32 align);
 			u32				GetTextAlign_script		();
 			void			SetTextColor_script		(int a, int r, int g, int b){SetTextColor(color_argb(a,r,g,b));}
@@ -167,6 +174,9 @@ public:
 	bool		Heading								()						{return m_bHeading;}
 	void		EnableHeading						(bool b)				{m_bHeading = b;m_lanim_xform.m_lanimFlags.set((1<<4),b);}
 
+	void	SetConstHeading					(bool b)				{m_bConstHeading = b;};
+	bool	GetConstHeading					()						{return m_bConstHeading;}
+
 	// will be need by CUI3tButton
 	// Don't change order!!!!!
 	typedef enum {
@@ -203,6 +213,7 @@ protected:
 	Fvector2				m_TextOffset;
 
 	bool					m_bHeading;
+	bool					m_bConstHeading;
 	float					m_fHeading;
 
 	// Для вывода текстуры с обрезанием по маске используем CUIFrameWindow
@@ -215,11 +226,8 @@ protected:
 	void Elipsis(const Frect &rect, EElipsisPosition elipsisPos);
 	int						m_iElipsisIndent;
 	Frect					m_ClipRect;
-
-private:
-	Frect	m_xxxRect; // need by RescaleRelative2Rect(Frect& r). it is initializes only once in Init(x,y,width,height)
-
 public:
+
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 
