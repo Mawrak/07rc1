@@ -2,8 +2,8 @@
 #pragma hdrstop
 
 #include "ResourceManager.h"
-#include "blenders\Blender_Recorder.h"
-#include "blenders\Blender.h"
+#include "../layers/blenders/Blender_Recorder.h"
+#include "../layers/blenders/Blender.h"
 
 void fix_texture_name(LPSTR fn);
 

@@ -312,16 +312,16 @@
     <ClInclude Include="EnnumerateVertices.h">
       <Filter>Render\Visuals\Skeleton</Filter>
     </ClInclude>
-    <ClInclude Include="SkeletonAnimated.h">
+    <ClInclude Include="..\layers\xrRender\SkeletonAnimated.h">
       <Filter>Render\Visuals\Skeleton</Filter>
     </ClInclude>
-    <ClInclude Include="SkeletonCustom.h">
+    <ClInclude Include="..\layers\xrRender\SkeletonCustom.h">
       <Filter>Render\Visuals\Skeleton</Filter>
     </ClInclude>
-    <ClInclude Include="SkeletonMotions.h">
+    <ClInclude Include="..\layers\xrRender\SkeletonMotions.h">
       <Filter>Render\Visuals\Skeleton</Filter>
     </ClInclude>
-    <ClInclude Include="SkeletonX.h">
+    <ClInclude Include="..\layers\xrRender\SkeletonX.h">
       <Filter>Render\Visuals\Skeleton</Filter>
     </ClInclude>
     <ClInclude Include="vis_common.h">
@@ -680,19 +680,19 @@
     <ClCompile Include="ParticleCustom.cpp">
       <Filter>Render\Visuals</Filter>
     </ClCompile>
-    <ClCompile Include="SkeletonAnimated.cpp">
+    <ClCompile Include="..\layers\xrRender\SkeletonAnimated.cpp">
       <Filter>Render\Visuals\Skeleton</Filter>
     </ClCompile>
-    <ClCompile Include="SkeletonCustom.cpp">
+    <ClCompile Include="..\layers\xrRender\SkeletonCustom.cpp">
       <Filter>Render\Visuals\Skeleton</Filter>
     </ClCompile>
-    <ClCompile Include="SkeletonMotions.cpp">
+    <ClCompile Include="..\layers\xrRender\SkeletonMotions.cpp">
       <Filter>Render\Visuals\Skeleton</Filter>
     </ClCompile>
-    <ClCompile Include="SkeletonRigid.cpp">
+    <ClCompile Include="..\layers\xrRender\SkeletonRigid.cpp">
       <Filter>Render\Visuals\Skeleton</Filter>
     </ClCompile>
-    <ClCompile Include="SkeletonX.cpp">
+    <ClCompile Include="..\layers\xrRender\SkeletonX.cpp">
       <Filter>Render\Visuals\Skeleton</Filter>
     </ClCompile>
     <ClCompile Include="Frustum.cpp">

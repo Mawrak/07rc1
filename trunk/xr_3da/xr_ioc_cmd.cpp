@@ -10,7 +10,7 @@
 #include "environment.h"
 #include "xr_input.h"
 #include "CustomHUD.h"
-#include "SkeletonAnimated.h"
+#include "../layers/xrRender/SkeletonAnimated.h"
 #include "ResourceManager.h"
 
 #include "xr_object.h"

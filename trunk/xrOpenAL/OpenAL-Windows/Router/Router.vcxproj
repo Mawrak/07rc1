@@ -60,17 +60,17 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>..\..\..\..\binaries\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>..\..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir>..\..\..\..\intermediate\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">
     <OutDir>..\..\..\..\binaries\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>..\..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir>..\..\..\..\intermediate\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>..\..\..\..\binaries\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>..\..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir>..\..\..\..\intermediate\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

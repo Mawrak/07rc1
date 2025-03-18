@@ -23,7 +23,7 @@ void CObject::cNameSect_set		(shared_str N)
 { 
 	NameSection	=	N; 
 }
-#include "SkeletonCustom.h"
+#include "../layers/xrRender/SkeletonCustom.h"
 void CObject::cNameVisual_set	(shared_str N)
 { 
 	// check if equal

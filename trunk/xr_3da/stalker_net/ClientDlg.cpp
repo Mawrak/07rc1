@@ -230,7 +230,7 @@ END_MESSAGE_MAP()
 // CClientDlg message handlers
 /////////////////////////////////////////////////////////
 #include <dplay8.h>
-#include <dxerr8.h>
+#include <dxerr.h>
 #include <vector>
 IDirectPlay8Client 		*g_pClient;
 IDirectPlay8Address		*g_pClientDeviceAddress	;
@@ -277,8 +277,8 @@ static const GUID STALKER_NET_GUID =
 
 
 HRESULT WINAPI Network_MessageHandler(	PVOID pvUserContext,
-									  	DWORD dwMessageType,
-									  	PVOID pMessageData );
+										DWORD dwMessageType,
+										PVOID pMessageData );
 void CClientDlg::OnBnClickedRefresh()
 {
 	ClearHostList();
@@ -448,7 +448,7 @@ void CClientDlg::AddServerToList		(SBServer server)
 		net_Hosts.push_back(*NODE);
 	else
 	{
- 		int x=0;
+		int x=0;
 		x=x;
 	}
 
@@ -895,7 +895,7 @@ BOOL	CClientDlg::Client_EnumHosts()
 	};
 	if (hr != S_OK)
 	{
-		const char* text = DXGetErrorString8(hr);
+		const char* text = DXGetErrorString(hr);
 		int x=0;
 		x=x;
 	}

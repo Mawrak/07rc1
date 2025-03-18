@@ -6,8 +6,9 @@
 /binaries
 /intermediate
 /libraries
-/trunk/xr_3da/ipch/
-/trunk/xr_3da/.vs/
+/trunk/ipch/
+/trunk/.vs/
+/3rd party/FreeImage/FreeImage/.vs
 /_appdata_
 fsgame.ltx
 gamedata.db*

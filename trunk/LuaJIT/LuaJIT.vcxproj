@@ -40,13 +40,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>..\..\..\binaries</OutDir>
-    <IntDir>..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir>..\..\..\intermediate\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
     <TargetName>lua5.1</TargetName>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>x:\binaries\Debug\</OutDir>
-    <IntDir>x:\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir>x:\intermediate\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
     <TargetName>lua5.1</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

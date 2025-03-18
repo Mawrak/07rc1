@@ -47,14 +47,18 @@
     <_ProjectFileVersion>12.0.21005.1</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>..\..\..\binaries</OutDir>
-    <IntDir>..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir>..\..\..\binaries\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>..\..\..\intermediate\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>..\..\xrCore;..\..\..\3rd party\DPlay;..\..\..\3rd party\dxerr\src;$(IncludePath)</IncludePath>
+    <LibraryPath>..\..\..\libraries\$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>..\..\..\binaries</OutDir>
-    <IntDir>..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir>..\..\..\binaries\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>..\..\..\intermediate\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>..\..\xrCore;..\..\..\3rd party\DPlay;..\..\..\3rd party\dxerr\src;$(IncludePath)</IncludePath>
+    <LibraryPath>..\..\..\libraries\$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Midl>
@@ -85,12 +89,12 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>dplayx.lib;dxerr8.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>dxerr.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <MapFileName />
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
-      <ImportLibrary>..\..\..\libraries\$(ProjectName).lib</ImportLibrary>
+      <ImportLibrary>..\..\..\libraries\$(Platform)\$(Configuration)\$(ProjectName).lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
@@ -132,7 +136,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>dplayx.lib;dxerr8.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>dxerr.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)$(ProjectName).pdb</ProgramDatabaseFile>
       <GenerateMapFile>false</GenerateMapFile>
@@ -142,7 +146,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
-      <ImportLibrary>..\..\..\libraries\$(ProjectName).lib</ImportLibrary>
+      <ImportLibrary>..\..\..\libraries\$(Platform)\$(Configuration)\$(ProjectName).lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
   </ItemDefinitionGroup>

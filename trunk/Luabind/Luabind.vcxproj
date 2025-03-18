@@ -41,11 +41,11 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <TargetName>luabind</TargetName>
     <OutDir>..\..\..\binaries\</OutDir>
-    <IntDir>..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir>..\..\..\intermediate\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
     <LibraryPath>../../3rd party/libs;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IntDir>x:\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir>x:\intermediate\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
     <OutDir>x:\binaries\Debug\</OutDir>
     <TargetName>luabind</TargetName>
   </PropertyGroup>

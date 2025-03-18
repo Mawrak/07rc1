@@ -61,23 +61,26 @@
     <OutDir>..\..\binaries\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>..\..\intermediate\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
-    <ExternalIncludePath>..\..\libraries\$(Platform)\$(Configuration)\;$(VC_IncludePath);$(WindowsSDK_IncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</ExternalIncludePath>
     <IncludePath>.\;..\xrCore;..\..\3rd party\dxsdk\Include;..\..\3rd party\Xiph\libogg\include;..\..\3rd party\Xiph\libvorbis\include;..\..\3rd party\DxErr\src;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>..\..\3rd party\dxsdk\Lib\;..\..\libraries\$(Platform)\$(Configuration)\;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>..\..\binaries\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>..\..\intermediate\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
     <LinkIncremental>true</LinkIncremental>
-    <ExternalIncludePath>..\..\libraries\$(Platform)\$(Configuration)\;$(VC_IncludePath);$(WindowsSDK_IncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</ExternalIncludePath>
     <IncludePath>.\;..\xrCore;..\..\3rd party\dxsdk\Include;..\..\3rd party\Xiph\libogg\include;..\..\3rd party\Xiph\libvorbis\include;..\..\3rd party\DxErr\src;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>..\..\3rd party\dxsdk\Lib\;..\..\libraries\$(Platform)\$(Configuration)\;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">
     <OutDir>..\..\binaries\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>..\..\intermediate\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
-    <ExternalIncludePath>..\..\libraries\$(Platform)\$(Configuration)\;$(VC_IncludePath);$(WindowsSDK_IncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</ExternalIncludePath>
     <IncludePath>.\;..\xrCore;..\..\3rd party\dxsdk\Include;..\..\3rd party\Xiph\libogg\include;..\..\3rd party\Xiph\libvorbis\include;..\..\3rd party\DxErr\src;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>..\..\3rd party\dxsdk\Lib\;..\..\libraries\$(Platform)\$(Configuration)\;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl>
@@ -123,7 +126,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>libogg_static.lib;libvorbis_static.lib;vorbisenc_static.lib;vorbisfile_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>false</SuppressStartupBanner>
       <IgnoreSpecificDefaultLibraries>user32.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -175,7 +178,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/MACHINE:I386 /NODEFAULTLIB:LIBCMTD %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>libogg_static_d.lib;libvorbis_static_d.lib;vorbisenc_static.lib;vorbisfile_static_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libogg_static_d.lib;libvorbis_static_d.lib;vorbisfile_static_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <IgnoreSpecificDefaultLibraries>user32.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -226,7 +229,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/MACHINE:I386 /NODEFAULTLIB:user32 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>libogg_static_d.lib;libvorbis_static_d.lib;vorbisenc_static.lib;vorbisfile_static_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libogg_static_d.lib;libvorbis_static_d.lib;vorbisfile_static_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <IgnoreSpecificDefaultLibraries>user32.dll;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>

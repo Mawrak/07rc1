@@ -6,7 +6,7 @@
 #include "x_ray.h"
 #include "xrLevel.h"
 #include "fmesh.h"
-#include "skeletoncustom.h"
+#include "../layers/xrRender/SkeletonCustom.h"
 #include "frustum.h"
 
 using namespace	collide;

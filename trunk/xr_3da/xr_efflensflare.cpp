@@ -5,7 +5,7 @@
 
 #include "igame_persistent.h"
 #include "Environment.h"
-#include "SkeletonCustom.h"
+#include "../layers/xrRender/SkeletonCustom.h"
 #include "cl_intersect.h"
 
 #ifdef _EDITOR
