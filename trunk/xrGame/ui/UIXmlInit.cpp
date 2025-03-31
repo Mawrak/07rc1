@@ -200,7 +200,7 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, LPCSTR path, int index, CUIStatic* 
 
 
 	str_flag					= xml_doc.ReadAttrib(path, index, "xform_anim",				"");
-	flag_cyclic					= xml_doc.ReadAttribInt(path, index, "xform_anim_cyclic",	1);
+	flag_cyclic					= (xml_doc.ReadAttribInt(path, index, "xform_anim_cyclic",	1) == 1);
 		
 	pWnd->SetXformLightAnim		(str_flag, flag_cyclic);
 
@@ -222,7 +222,8 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, LPCSTR path, int index, CUIStatic* 
 		pWnd->ClipperOff();
 
 	bool bComplexMode = (xml_doc.ReadAttribInt(path, index, "complex_mode", 0) == 1);
-	pWnd->SetTextComplexMode(bComplexMode);
+	if (bComplexMode)
+		pWnd->SetTextComplexMode(true);
 
 	shared_str mirroring = xml_doc.ReadAttrib(path, index, "mirror", "");
 	if (0 == xr_strcmp(mirroring, "h"))
@@ -279,7 +280,8 @@ bool CUIXmlInit::InitText(CUIXml& xml_doc, LPCSTR path, int index, CUIStatic* pW
 		pWnd->SetVTextAlignment(valTop);
 
 	bool bComplexMode = (xml_doc.ReadAttribInt(path, index, "complex_mode", 0) == 1);
-	pWnd->SetTextComplexMode(bComplexMode);
+	if (bComplexMode)
+		pWnd->SetTextComplexMode(true);
 
 	// Text coordinates
 	float text_x = xml_doc.ReadAttribFlt(path, index, "x", 0);
