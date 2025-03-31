@@ -2,7 +2,7 @@
 #include "UIFrameLineWnd.h"
 
 CUIFrameLineWnd::CUIFrameLineWnd()
-	:	bHorizontal(true),
+	: m_bHorizontal(true),
 		m_bTextureAvailable(false)
 {
 	AttachChild(&UITitleText);
@@ -25,17 +25,18 @@ void CUIFrameLineWnd::Init(LPCSTR base_name, float x, float y, float width, floa
 	if (horizontal)
 		UITitleText.Init(0,0, width, 50);
 	else
-		UITitleText.Init(0,0, 50, height);	
+		UITitleText.Init(0,0, 50, height);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIFrameLineWnd::InitTexture(LPCSTR tex_name, bool horizontal){
+void CUIFrameLineWnd::InitTexture(LPCSTR tex_name, bool horizontal)
+{
 
 	Frect			rect;
 	GetAbsoluteRect	(rect);
 
-	bHorizontal = horizontal;
+	m_bHorizontal = horizontal;
 
 	if (horizontal)
 	{
@@ -71,7 +72,7 @@ void CUIFrameLineWnd::Draw()
 void CUIFrameLineWnd::SetWidth(float width)
 {
 	inherited::SetWidth(width);
-	if (bHorizontal)
+	if (m_bHorizontal)
 		UIFrameLine.SetSize(width);
 }
 
@@ -80,7 +81,7 @@ void CUIFrameLineWnd::SetWidth(float width)
 void CUIFrameLineWnd::SetHeight(float height)
 {
 	inherited::SetHeight(height);
-	if (!bHorizontal)
+	if (!m_bHorizontal)
 		UIFrameLine.SetSize(height);
 }
 

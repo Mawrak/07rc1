@@ -25,7 +25,7 @@ public:
 	CUIStatic*		GetTitleStatic(){return &UITitleText;};
 
 protected:
-	bool			bHorizontal;
+	bool			m_bHorizontal;
 	bool			m_bTextureAvailable;
-	CUIFrameLine	UIFrameLine;	
+	CUIFrameLine	UIFrameLine;
 };
