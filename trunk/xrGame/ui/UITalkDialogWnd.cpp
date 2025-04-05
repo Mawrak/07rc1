@@ -5,7 +5,15 @@
 #include "UIXmlInit.h"
 #include "UIScrollView.h"
 #include "UI3tButton.h"
+#include "UIInventoryUtilities.h"
+
+#include "../game_news.h"
+#include "../level.h"
+#include "../actor.h"
+#include "../alife_registry_wrappers.h"
 #include "../UI.h"
+#include "../GameConstants.h"
+#include <dinput.h>
 
 
 #define				TALK_XML				"talk.xml"
@@ -94,8 +102,6 @@ void CUITalkDialogWnd::Init(float x, float y, float width, float height)
 	AddCallback					("trade_btn",BUTTON_CLICKED,CUIWndCallback::void_function(this, &CUITalkDialogWnd::OnTradeClicked));
 }
 
-#include "UIInventoryUtilities.h"
-	
 void CUITalkDialogWnd::Show()
 {
 	InventoryUtilities::SendInfoToActor				("ui_talk");
@@ -142,21 +148,32 @@ void CUITalkDialogWnd::ClearQuestions()
 }
 
 
-void CUITalkDialogWnd::AddQuestion(LPCSTR str, LPCSTR value)
+void CUITalkDialogWnd::AddQuestion(LPCSTR str, LPCSTR value, int number, SPhraseInfo phInfo)
 {
-	CUIQuestionItem* itm			= xr_new<CUIQuestionItem>(m_uiXml,"question_item");
+	CUIQuestionItem* itm			= xr_new<CUIQuestionItem>(m_uiXml, "question_item");
 	itm->Init						(value, str);
 	itm->SetWindowName				("question_item");
+	++number; // zero-based index
+	float x_offset = 0.f;
+	if (itm->m_num_text)
+	{
+		string16 out_text = "";
+		xr_sprintf(out_text, "%d.", number);
+		itm->m_num_text->SetText(out_text);
+		x_offset += itm->m_fTextOffset;
+		if (number > 9)
+			x_offset += itm->m_fOffset;
+	}
+	itm->m_text_btn->SetTextX(x_offset);
+	if (number < 10)
+		itm->m_text_btn->SetAccelerator(DIK_ESCAPE + number, 0);
 	UIQuestionsList->AddWindow		(itm, true);
 	Register						(itm);
 }
-#include "../game_news.h"
-#include "../level.h"
-#include "../actor.h"
-#include "../alife_registry_wrappers.h"
+
 void CUITalkDialogWnd::AddAnswer(LPCSTR SpeakerName, LPCSTR str, bool bActor)
 {
-	CUIAnswerItem* itm				= xr_new<CUIAnswerItem>(m_uiXml,bActor?"actor_answer_item":"other_answer_item");
+	CUIAnswerItem* itm				= xr_new<CUIAnswerItem>(m_uiXml, bActor ? "actor_answer_item" : "other_answer_item");
 	itm->Init						(str, SpeakerName);
 	UIAnswersList->AddWindow		(itm, true);
 	UIAnswersList->ScrollToEnd		();
@@ -170,7 +187,7 @@ void CUITalkDialogWnd::AddAnswer(LPCSTR SpeakerName, LPCSTR str, bool bActor)
 	news_data.m_type				= GAME_NEWS_DATA::eTalk;
 	news_data.news_text				= str_.c_str();
 //.	news_data.texture_name			= "ui\\ui_icons_npc";
-	CUICharacterInfo& ci			= bActor?UICharacterInfoLeft:UICharacterInfoRight; 
+	CUICharacterInfo& ci			= bActor ? UICharacterInfoLeft : UICharacterInfoRight; 
 	
 	news_data.texture_name			= ci.IconName();
 	news_data.tex_rect				= ci.UIIcon().GetUIStaticItem().GetOriginalRect();
@@ -183,7 +200,7 @@ void CUITalkDialogWnd::AddAnswer(LPCSTR SpeakerName, LPCSTR str, bool bActor)
 
 void CUITalkDialogWnd::AddIconedAnswer(LPCSTR text, LPCSTR texture_name, Frect texture_rect, LPCSTR templ_name)
 {
-	CUIAnswerItemIconed* itm				= xr_new<CUIAnswerItemIconed>(m_uiXml,templ_name);
+	CUIAnswerItemIconed* itm				= xr_new<CUIAnswerItemIconed>(m_uiXml, templ_name);
 	itm->Init								(text, texture_name, texture_rect);
 	UIAnswersList->AddWindow				(itm, true);
 	UIAnswersList->ScrollToEnd				();
@@ -201,15 +218,16 @@ void CUITalkDialogWnd::SetOsoznanieMode(bool b)
 }
 
 
-void CUIQuestionItem::SendMessage				(CUIWindow* pWnd, s16 msg, void* pData)
+void CUIQuestionItem::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 {
 	CUIWndCallback::OnEvent(pWnd, msg, pData);
 }
 
-CUIQuestionItem::CUIQuestionItem			(CUIXml* xml_doc, LPCSTR path)
+CUIQuestionItem::CUIQuestionItem(CUIXml* xml_doc, LPCSTR path)
 {
-	m_text							= xr_new<CUI3tButton>();m_text->SetAutoDelete(true);
-	AttachChild						(m_text);
+	m_text_btn						= xr_new<CUI3tButton>();
+	m_text_btn->SetAutoDelete		(true);
+	AttachChild						(m_text_btn);
 
 	string512						str;
 	CUIXmlInit						xml_init;
@@ -217,23 +235,35 @@ CUIQuestionItem::CUIQuestionItem			(CUIXml* xml_doc, LPCSTR path)
 	strcpy							(str,path);
 	xml_init.InitWindow				(*xml_doc, str, 0, this);
 
-	m_min_height					= xml_doc->ReadAttribFlt(path,0,"min_height",15.0f);
+	m_min_height					= xml_doc->ReadAttribFlt(path, 0, "min_height", 15.0f);
 
 	strconcat						(sizeof(str),str,path,":content_text");
-	xml_init.Init3tButton			(*xml_doc, str, 0, m_text);
+	xml_init.Init3tButton			(*xml_doc, str, 0, m_text_btn);
 
-	Register						(m_text);
-	m_text->SetWindowName			("text_button");
-	AddCallback						("text_button",BUTTON_CLICKED,CUIWndCallback::void_function(this, &CUIQuestionItem::OnTextClicked));
+	Register						(m_text_btn);
+	m_text_btn->SetWindowName		("text_button");
+	AddCallback						("text_button", BUTTON_CLICKED, CUIWndCallback::void_function(this, &CUIQuestionItem::OnTextClicked));
 
+	m_num_text						= nullptr;
+
+	if (GameConstants::GetNumBeforeAnswersShowing())
+	{
+		m_num_text					= xr_new<CUIStatic>();
+		m_num_text->SetAutoDelete	(true);
+		AttachChild					(m_num_text);
+		strconcat					(sizeof(str), str, path, ":number_phrase");
+		xml_init.InitStatic			(*xml_doc, str, 0, m_num_text);
+		m_fOffset					= xml_doc->ReadAttribFlt(str, 0, "offset", 0.f);
+		m_fTextOffset				= xml_doc->ReadAttribFlt(str, 0, "text_offset", 0.f);
+	}
 }
 
-void CUIQuestionItem::Init			(LPCSTR val, LPCSTR text)
+void CUIQuestionItem::Init(LPCSTR val, LPCSTR text)
 {
 	m_s_value						= val;
-	m_text->SetText					(text);
-	m_text->AdjustHeightToText		();
-	float new_h						= _max(m_min_height, m_text->GetWndPos().y+m_text->GetHeight());
+	m_text_btn->SetText				(text);
+	m_text_btn->AdjustHeightToText	();
+	float new_h						= _max(m_min_height, m_text_btn->GetWndPos().y + m_text_btn->GetHeight());
 	SetHeight						(new_h);
 }
 
@@ -243,7 +273,7 @@ void	CUIQuestionItem::OnTextClicked(CUIWindow* w, void*)
 }
 
 
-CUIAnswerItem::CUIAnswerItem			(CUIXml* xml_doc, LPCSTR path)
+CUIAnswerItem::CUIAnswerItem(CUIXml* xml_doc, LPCSTR path)
 {
 	m_text							= xr_new<CUIStatic>();m_text->SetAutoDelete(true);
 	m_name							= xr_new<CUIStatic>();m_name->SetAutoDelete(true);
@@ -266,7 +296,7 @@ CUIAnswerItem::CUIAnswerItem			(CUIXml* xml_doc, LPCSTR path)
 	SetAutoDelete					(true);
 }
 
-void CUIAnswerItem::Init			(LPCSTR text, LPCSTR name)
+void CUIAnswerItem::Init(LPCSTR text, LPCSTR name)
 {
 	m_name->SetText					(name);
 	m_text->SetText					(text);
@@ -276,7 +306,7 @@ void CUIAnswerItem::Init			(LPCSTR text, LPCSTR name)
 	SetHeight						(new_h);
 }
 
-CUIAnswerItemIconed::CUIAnswerItemIconed		(CUIXml* xml_doc, LPCSTR path)
+CUIAnswerItemIconed::CUIAnswerItemIconed(CUIXml* xml_doc, LPCSTR path)
 :CUIAnswerItem(xml_doc, path)
 {
 	m_icon							= xr_new<CUIStatic>();m_icon->SetAutoDelete(true);
@@ -289,7 +319,7 @@ CUIAnswerItemIconed::CUIAnswerItemIconed		(CUIXml* xml_doc, LPCSTR path)
 	xml_init.InitStatic				(*xml_doc, str, 0, m_icon);
 }
 
-void CUIAnswerItemIconed::Init		(LPCSTR text, LPCSTR texture_name, Frect texture_rect)
+void CUIAnswerItemIconed::Init(LPCSTR text, LPCSTR texture_name, Frect texture_rect)
 {
 	inherited::Init					(text,"");
 	m_icon->CreateShader			(texture_name,"hud\\default");
@@ -299,4 +329,3 @@ void CUIAnswerItemIconed::Init		(LPCSTR text, LPCSTR texture_name, Frect texture
 	m_icon->SetStretchTexture		(true);
 
 }
-

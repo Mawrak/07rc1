@@ -12,6 +12,7 @@ bool	m_bMergeAmmoLineWithFiremode		= true;
 bool	m_bShowContactBio					= false;
 bool	m_bShowPartnerWeightInCarBody		= false;
 bool	m_bShowTrackBarValues				= false;
+bool	m_bShowNumBeforeAnswers				= false;
 
 namespace GameConstants
 {
@@ -29,6 +30,7 @@ namespace GameConstants
 		m_bShowContactBio					= READ_IF_EXISTS(pConstantsSettings, r_bool, "ui_settings", "show_contact_bio", false);
 		m_bShowPartnerWeightInCarBody		= READ_IF_EXISTS(pConstantsSettings, r_bool, "ui_settings", "show_partner_weight_in_carbody", false);
 		m_bShowTrackBarValues				= READ_IF_EXISTS(pConstantsSettings, r_bool, "ui_settings", "show_track_bar_values", false);
+		m_bShowNumBeforeAnswers				= READ_IF_EXISTS(pConstantsSettings, r_bool, "ui_settings", "show_numbers_before_answers", false);
 
 		Msg("# GameConstants are loaded");
 	}
@@ -66,5 +68,10 @@ namespace GameConstants
 	bool GetTrackBarValuesShowing()
 	{
 		return m_bShowTrackBarValues;
+	}
+
+	bool GetNumBeforeAnswersShowing()
+	{
+		return m_bShowNumBeforeAnswers;
 	}
 }

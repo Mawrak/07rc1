@@ -10,6 +10,10 @@
 class CPhraseDialog;
 class CGameObject;
 
+struct SPhraseInfo
+{
+};
+
 class CPhrase
 {
 private:

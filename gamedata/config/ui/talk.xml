@@ -58,6 +58,9 @@
 
 
 	<question_item x="0" y="0" width="527" height="20" min_height="13">
+		<number_phrase x="0" y="0" width="8" height="20" text_offset="17" offset="8">
+			<text font="letterica18" r="255" g="232" b="208"/>
+		</number_phrase>
 		<content_text x="0" y="0" width="520" height="20">
 		<text font="letterica18" r="255" g="232" b="208" align="l" complex_mode="1"/>
 		<text_color>

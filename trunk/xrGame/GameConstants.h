@@ -11,4 +11,5 @@ namespace GameConstants
 	bool GetContactsBioShowing				();
 	bool GetPartnerWeightInCarBodyShowing	();
 	bool GetTrackBarValuesShowing			();
+	bool GetNumBeforeAnswersShowing			();
 };

@@ -55,7 +55,7 @@ public:
 	CUICharacterInfo	UICharacterInfoLeft;
 	CUICharacterInfo	UICharacterInfoRight;
 
-	void				AddQuestion			(LPCSTR str, LPCSTR value);
+	void				AddQuestion			(LPCSTR str, LPCSTR value, int number, SPhraseInfo phInfo);
 	void				AddAnswer			(LPCSTR SpeakerName, const char* str, bool bActor);
 	void				AddIconedAnswer		(LPCSTR text, LPCSTR texture_name, Frect texture_rect, LPCSTR templ_name);
 	void				ClearAll			();
@@ -83,7 +83,10 @@ class CUIQuestionItem :public CUIWindow, public CUIWndCallback
 	typedef CUIWindow inherited;
 	float			m_min_height;
 public:
-	CUI3tButton*	m_text;
+	CUI3tButton*	m_text_btn;
+	CUIStatic*		m_num_text;
+	float			m_fOffset;
+	float			m_fTextOffset;
 	shared_str		m_s_value;
 					CUIQuestionItem			(CUIXml* xml_doc, LPCSTR path);
 	void			Init					(LPCSTR val, LPCSTR text);
