@@ -164,6 +164,33 @@ void CUITalkDialogWnd::AddQuestion(LPCSTR str, LPCSTR value, int number, SPhrase
 		if (number > 9)
 			x_offset += itm->m_fOffset;
 	}
+	if (&phInfo.sIconName && phInfo.sIconName.size() > 1)
+	{
+		Fvector2 icon_size = itm->m_icon_size;
+		itm->m_text_btn->AddStatic();
+		CUIStatic* pBtnStatic = itm->m_text_btn->GetBtnStatic();
+		pBtnStatic->SetWndPos(0.f, 0.f);
+		if (!phInfo.bUseIconLtx)
+		{
+			pBtnStatic->InitTextureEx(phInfo.sIconName.c_str(), "hud\\default");
+		}
+		else
+		{
+			pBtnStatic->InitTexture(EQUIPMENT_ICONS);
+			pBtnStatic->GetUIStaticItem().SetShader(InventoryUtilities::GetEquipmentIconsShader());
+			float x			= float(pSettings->r_u32(phInfo.sIconName, "inv_grid_x") * INV_GRID_WIDTH);
+			float y			= float(pSettings->r_u32(phInfo.sIconName, "inv_grid_y") * INV_GRID_HEIGHT);
+			float width		= float(pSettings->r_u32(phInfo.sIconName, "inv_grid_width") * INV_GRID_WIDTH);
+			float height	= float(pSettings->r_u32(phInfo.sIconName, "inv_grid_height") * INV_GRID_HEIGHT);
+
+			pBtnStatic->GetUIStaticItem().SetOriginalRect(x, y, width, height);
+			icon_size.x *= width / INV_GRID_WIDTH;
+		}
+		pBtnStatic->SetWndPos(x_offset, 0.f);
+		x_offset += icon_size.x + itm->m_fOffsetAfterIcon;
+		pBtnStatic->SetWndSize(icon_size);
+		pBtnStatic->SetStretchTexture(true);
+	}
 	itm->m_text_btn->SetTextX(x_offset);
 	if (number < 10)
 		itm->m_text_btn->SetAccelerator(DIK_ESCAPE + number, 0);
@@ -234,10 +261,14 @@ CUIQuestionItem::CUIQuestionItem(CUIXml* xml_doc, LPCSTR path)
 
 	strcpy							(str,path);
 	xml_init.InitWindow				(*xml_doc, str, 0, this);
-
+	
 	m_min_height					= xml_doc->ReadAttribFlt(path, 0, "min_height", 15.0f);
 
-	strconcat						(sizeof(str),str,path,":content_text");
+	m_icon_size.x					= xml_doc->ReadAttribFlt(path, 0, "icon_width", 15.0f);
+	m_icon_size.y					= xml_doc->ReadAttribFlt(path, 0, "icon_height", 15.0f);
+	m_fOffsetAfterIcon				= xml_doc->ReadAttribFlt(path, 0, "text_offset_after_icon", 3.0f);
+
+	strconcat						(sizeof(str), str, path,":content_text");
 	xml_init.Init3tButton			(*xml_doc, str, 0, m_text_btn);
 
 	Register						(m_text_btn);
@@ -275,8 +306,10 @@ void	CUIQuestionItem::OnTextClicked(CUIWindow* w, void*)
 
 CUIAnswerItem::CUIAnswerItem(CUIXml* xml_doc, LPCSTR path)
 {
-	m_text							= xr_new<CUIStatic>();m_text->SetAutoDelete(true);
-	m_name							= xr_new<CUIStatic>();m_name->SetAutoDelete(true);
+	m_text							= xr_new<CUIStatic>();
+	m_text->SetAutoDelete			(true);
+	m_name							= xr_new<CUIStatic>();
+	m_name->SetAutoDelete			(true);
 	AttachChild						(m_text);
 	AttachChild						(m_name);
 
@@ -286,12 +319,12 @@ CUIAnswerItem::CUIAnswerItem(CUIXml* xml_doc, LPCSTR path)
 	strcpy							(str,path);
 	xml_init.InitWindow				(*xml_doc, str, 0, this);
 
-	m_min_height					= xml_doc->ReadAttribFlt(path,0,"min_height",15.0f);
-	m_bottom_footer					= xml_doc->ReadAttribFlt(path,0,"bottom_footer",0.0f);
-	strconcat						(sizeof(str),str,path,":content_text");
+	m_min_height					= xml_doc->ReadAttribFlt(path, 0, "min_height", 15.0f);
+	m_bottom_footer					= xml_doc->ReadAttribFlt(path, 0, "bottom_footer", 0.0f);
+	strconcat						(sizeof(str), str, path, ":content_text");
 	xml_init.InitStatic				(*xml_doc, str, 0, m_text);
 
-	strconcat						(sizeof(str),str,path,":name_caption");
+	strconcat						(sizeof(str), str, path, ":name_caption");
 	xml_init.InitStatic				(*xml_doc, str, 0, m_name);
 	SetAutoDelete					(true);
 }
@@ -301,7 +334,7 @@ void CUIAnswerItem::Init(LPCSTR text, LPCSTR name)
 	m_name->SetText					(name);
 	m_text->SetText					(text);
 	m_text->AdjustHeightToText		();
-	float new_h						= _max(m_min_height, m_text->GetWndPos().y+m_text->GetHeight());
+	float new_h						= _max(m_min_height, m_text->GetWndPos().y + m_text->GetHeight());
 	new_h							+= m_bottom_footer;
 	SetHeight						(new_h);
 }
@@ -315,7 +348,7 @@ CUIAnswerItemIconed::CUIAnswerItemIconed(CUIXml* xml_doc, LPCSTR path)
 	string512						str;
 	CUIXmlInit						xml_init;
 
-	strconcat						(sizeof(str),str,path,":msg_icon");
+	strconcat						(sizeof(str), str, path, ":msg_icon");
 	xml_init.InitStatic				(*xml_doc, str, 0, m_icon);
 }
 
@@ -323,9 +356,10 @@ void CUIAnswerItemIconed::Init(LPCSTR text, LPCSTR texture_name, Frect texture_r
 {
 	inherited::Init					(text,"");
 	m_icon->CreateShader			(texture_name,"hud\\default");
-	m_icon->GetUIStaticItem().SetOriginalRect(texture_rect.x1,texture_rect.y1,texture_rect.x2,texture_rect.y2);
+	m_icon->GetUIStaticItem().SetOriginalRect(texture_rect.x1, texture_rect.y1, texture_rect.x2, texture_rect.y2);
 	m_icon->TextureAvailable		(true);
 	m_icon->TextureOn				();
 	m_icon->SetStretchTexture		(true);
 
 }
+

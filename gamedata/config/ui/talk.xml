@@ -57,7 +57,7 @@
 	<answers_list	x="33" y="46" width="544" height="377" right_ident="0" always_show_scroll="0"/>
 
 
-	<question_item x="0" y="0" width="527" height="20" min_height="13">
+	<question_item x="0" y="0" width="527" height="20" min_height="13" icon_width="19" icon_height="19">
 		<number_phrase x="0" y="0" width="8" height="20" text_offset="17" offset="8">
 			<text font="letterica18" r="255" g="232" b="208"/>
 		</number_phrase>

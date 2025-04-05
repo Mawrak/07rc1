@@ -73,7 +73,8 @@ public:
 	//(сделано статическим, так как мы должны передавать имеенно DIALOG_SHARED_PTR&,
 	//а не обычный указатель)
 	static bool				SayPhrase			(DIALOG_SHARED_PTR& phrase_dialog, const shared_str& phrase_id);
-
+	
+		CPhrase*			GetPhrase			(const shared_str& phrase_id);
 		LPCSTR				GetPhraseText		(const shared_str& phrase_id, bool current_speaking = true);
 		LPCSTR				GetLastPhraseText	() {return GetPhraseText(m_SaidPhraseID, false);}
 		const shared_str&	GetDialogID			() const {return m_DialogId;}

@@ -85,6 +85,8 @@ class CUIQuestionItem :public CUIWindow, public CUIWndCallback
 public:
 	CUI3tButton*	m_text_btn;
 	CUIStatic*		m_num_text;
+	Fvector2		m_icon_size;
+	float			m_fOffsetAfterIcon;
 	float			m_fOffset;
 	float			m_fTextOffset;
 	shared_str		m_s_value;

@@ -141,6 +141,10 @@ void CUITalkWnd::UpdateQuestions()
 			if (!caption.size())
 				--number;
 			SPhraseInfo phInfo;
+
+			phInfo.sIconName	= (phrase_dialog->GetPhrase("0"))->GetIconName();
+			phInfo.bUseIconLtx	= (phrase_dialog->GetPhrase("0"))->GetIconUsingLTX();
+
 			AddQuestion(phrase_dialog->DialogCaption(), phrase_dialog->GetDialogID(), number, phInfo);
 		}
 	}
@@ -164,6 +168,9 @@ void CUITalkWnd::UpdateQuestions()
 				{
 					CPhrase* phrase = *it;
 					SPhraseInfo phInfo;
+
+					phInfo.sIconName = phrase->GetIconName();
+					phInfo.bUseIconLtx = phrase->GetIconUsingLTX();
 
 					AddQuestion(phrase->GetText(), phrase->GetID(), number, phInfo);
 				}
