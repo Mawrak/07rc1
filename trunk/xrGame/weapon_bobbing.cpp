@@ -10,6 +10,8 @@
 #include "weapon_bobbing.h"
 #include "actor.h"
 
+float psWpnBobMult = 1.0f;
+
 CWeaponBobbing::CWeaponBobbing()
 {
 	Load();
@@ -69,17 +71,17 @@ void CWeaponBobbing::Update(Fmatrix &m)
 
 		if (isActorAccelerated(dwMState, m_bZoomMode))
 		{
-			A	= m_fAmplitudeRun * k;
+			A	= m_fAmplitudeRun * k * psWpnBobMult;
 			ST	= m_fSpeedRun * fTime * k;
 		}
 		else if (is_limping)
 		{
-			A	= m_fAmplitudeLimp * k;
+			A	= m_fAmplitudeLimp * k * psWpnBobMult;
 			ST	= m_fSpeedLimp * fTime * k;
 		}
 		else
 		{
-			A	= m_fAmplitudeWalk * k;
+			A	= m_fAmplitudeWalk * k * psWpnBobMult;
 			ST	= m_fSpeedWalk * fTime * k;
 		}
 	
