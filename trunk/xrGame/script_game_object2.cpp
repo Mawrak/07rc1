@@ -413,8 +413,9 @@ float CScriptGameObject::max_ignore_monster_distance	() const
 
 CCar* CScriptGameObject::get_car	()
 {
-	CCar		*car = smart_cast<CCar*>(&object());
-	if (!car) {
+	CCar		*car = object().cast_car();
+	if (!car)
+	{
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member get_car!");
 		NODEFAULT;
 	}

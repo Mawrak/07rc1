@@ -1684,6 +1684,14 @@ bool CActor::can_attach			(const CInventoryItem *inventory_item) const
 	return true;
 }
 
+CCar* CActor::GetCarHolder() const
+{
+	CCar* ret_car = nullptr;
+	if (m_holder)
+		ret_car = m_holder->cast_car();
+	return ret_car;
+}
+
 void CActor::OnDifficultyChanged	()
 {
 	// immunities

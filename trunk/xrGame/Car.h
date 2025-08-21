@@ -605,10 +605,18 @@ protected:
 public:
 	CCar(void);
 	virtual ~CCar(void);
-	virtual BOOL					AlwaysTheCrow						();
+	virtual BOOL					AlwaysTheCrow				();
 
 public:
-	virtual CEntity*					cast_entity				()						{return this;}
+	virtual CEntity*				cast_entity					() { return this; }
+	virtual CGameObject*			cast_game_object			() { return this; }
+	virtual CExplosive*				cast_explosive				() { return this; }
+	virtual CPhysicsShellHolder*	cast_physics_shell_holder	() { return this; }
+	virtual CParticlesPlayer*		cast_particles_player		() { return this; }
+	virtual CScriptEntity*			cast_script_entity			() { return this; }
+	virtual IDamageSource*			cast_IDamageSource			() { return this; }
+	virtual CHolderCustom*			cast_holder_custom			() { return this; }
+	virtual CCar*					cast_car					() { return this; }
 private:
 	template <class T> IC void fill_wheel_vector(LPCSTR S,xr_vector<T>& type_wheels);
 	IC void fill_exhaust_vector(LPCSTR S,xr_vector<SExhaust>& exhausts);
@@ -617,15 +625,8 @@ private:
 	//Inventory for the car
 	CInventory	*inventory;
 	
-	virtual	void reinit			();
-	virtual	void reload			(LPCSTR section);
-	virtual CGameObject			*cast_game_object			()	{return this;}
-	virtual CExplosive			*cast_explosive				()	{return this;}
-	virtual CPhysicsShellHolder	*cast_physics_shell_holder	()	{return this;}
-	virtual CParticlesPlayer	*cast_particles_player		()	{return this;}
-	virtual CScriptEntity		*cast_script_entity			()	{return this;}
-	virtual IDamageSource		*cast_IDamageSource			()	{return this;}
-	virtual CHolderCustom		*cast_holder_custom			()	{return this;}
+	virtual	void					reinit						();
+	virtual	void					reload						(LPCSTR section);
 
 private:
 	car_memory	*m_memory;

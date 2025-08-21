@@ -271,6 +271,7 @@ public:
 	void					attach_Vehicle			(CHolderCustom* vehicle);
 
 	virtual bool			can_attach				(const CInventoryItem *inventory_item) const;
+			CCar*			GetCarHolder			() const;
 protected:
 	CHolderCustom*			m_holder;
 	u16						m_holderID;
