@@ -119,6 +119,26 @@ void CCar::reload		(LPCSTR section)
 		m_memory->reload	(section);
 }
 
+void CCar::MoveCar(Fvector NewPos, Fvector NewDir)
+{
+	Fmatrix	M = XFORM();
+	M.translate(NewPos);
+	Fvector3 saved_pos = M.c;
+	M.setHPB(NewDir.y, NewDir.x, NewDir.z);
+	M.c.set(saved_pos);
+	ForceTransform(M);
+}
+
+void CCar::ForceTransform(const Fmatrix& m)
+{
+	Fvector zero_vel{ 0.f, 0.f, 0.f };
+	m_pPhysicsShell->set_LinearVel(zero_vel);// stop car
+	XFORM().set(m);
+	PPhysicsShell()->SetGlTransformDynamic(m);
+	PressBreaks();
+	ReleaseBreaks();
+}
+
 void CCar::cb_Steer			(CBoneInstance* B)
 {
 	VERIFY2(fsimilar(DET(B->mTransform),1.f,DET_CHECK_EPS),"Bones receive returns 0 matrix");

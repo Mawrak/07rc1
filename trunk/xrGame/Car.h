@@ -606,6 +606,8 @@ public:
 	CCar(void);
 	virtual ~CCar(void);
 	virtual BOOL					AlwaysTheCrow				();
+	virtual void					MoveCar						(Fvector NewPos, Fvector NewDir);
+	virtual void					ForceTransform				(const Fmatrix& m);
 
 public:
 	virtual CEntity*				cast_entity					() { return this; }
