@@ -353,7 +353,7 @@ void CActor::OnRender	()
 {
 	if (!bDebug)				return;
 
-	if ((dbg_net_Draw_Flags.is_any((1<<5))))
+	if ((dbg_net_Draw_Flags.is_any(dbg_draw_actor_phys)))
 		character_physics_support()->movement()->dbg_Draw	();
 
 	OnRender_Network();

@@ -1402,7 +1402,7 @@ void	CActor::OnRender_Network()
 	//-----------------------------------------------------------------------------------------------------
 	if (g_Alive())
 	{
-		if (dbg_net_Draw_Flags.test(1<<8))
+		if (dbg_net_Draw_Flags.test(dbg_draw_autopickupbox))
 		{
 			Fvector bc; bc.add(Position(), m_AutoPickUp_AABB_Offset);
 			Fvector bd = m_AutoPickUp_AABB;
@@ -1411,7 +1411,7 @@ void	CActor::OnRender_Network()
 		};
 		
 		CKinematics* V		= smart_cast<CKinematics*>(Visual());
-		if (dbg_net_Draw_Flags.test(1<<0) && V)
+		if (dbg_net_Draw_Flags.test(dbg_draw_actor_alive) && V)
 		{
 			if (this != Level().CurrentViewEntity() || cam_active != eacFirstEye)
 			{
@@ -1469,7 +1469,7 @@ void	CActor::OnRender_Network()
 			};
 		};
 
-		if (!(dbg_net_Draw_Flags.is_any((1<<1)))) return;
+		if (!(dbg_net_Draw_Flags.is_any((dbg_draw_actor_dead)))) return;
 		
 		dbg_draw_piramid(Position(), character_physics_support()->movement()->GetVelocity(), size, -r_model_yaw, color_rgba(128, 255, 128, 255));
 		dbg_draw_piramid(IStart.Pos, IStart.Vel, size, -IStart.o_model, color_rgba(255, 0, 0, 255));
@@ -1565,10 +1565,10 @@ void	CActor::OnRender_Network()
 	}
 	else
 	{
-		if (!(dbg_net_Draw_Flags.is_any((1<<1)))) return;
+		if (!(dbg_net_Draw_Flags.is_any((dbg_draw_actor_dead)))) return;
 
-		CKinematics* V		= smart_cast<CKinematics*>(Visual());
-		if (dbg_net_Draw_Flags.test(1<<0) && V)
+		CKinematics* V = smart_cast<CKinematics*>(Visual());
+		if (dbg_net_Draw_Flags.test(dbg_draw_actor_alive) && V)
 		{
 			u16 BoneCount = V->LL_BoneCount();
 			for (u16 i=0; i<BoneCount; i++)

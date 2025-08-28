@@ -659,7 +659,7 @@ void CLevel::OnRender()
 			}
 
 			
-			if (dbg_net_Draw_Flags.test(1<<11)) //draw skeleton
+			if (dbg_net_Draw_Flags.test(dbg_draw_skeleton)) //draw skeleton
 			{
 				CGameObject* pGO = smart_cast<CGameObject*>	(_O);
 				if (pGO && pGO != Level().CurrentViewEntity() && !pGO->H_Parent())
