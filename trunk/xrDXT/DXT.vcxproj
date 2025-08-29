@@ -169,6 +169,10 @@
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">X:\trunk\xray\xrLua\src;..\..\3rd party\FreeImage\FreeImage\Source;X:\trunk\xray\xrCore;..\..\3rd party\MagicSoftware\FreeMagic\Include;..\..\3rd party\OpenAL\Include;..\..\3rd party\luabind_old\luabind;..\..\3rd party\loki;..\..\3rd party\eax\Include;..\..\3rd party\boost;$(WindowsSdkDir)include;..\..\3rd party\dxsdk\Include\;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(FrameworkSDKDir)\include</IncludePath>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x64;..\..\3rd party\OpenAL\libs\Win64;..\..\3rd party\eax;..\..\..\libraries\x64\Debug\;$(VCInstallDir)lib\amd64;$(VCInstallDir)atlmfc\lib\amd64;$(WindowsSdkDir)lib\x64</LibraryPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">
+    <IncludePath>..\..\3rd party\nvtt\include\;..\..\3rd party\nvtt\src\nvtt;..\xrDXT\dds;..\xrLua\src;..\..\3rd party\FreeImage\FreeImage\Source;..\xrCore;..\..\3rd party\MagicSoftware\FreeMagic\Include;..\..\3rd party\OpenAL\Include;..\..\3rd party\luabind_old\luabind;..\..\3rd party\loki;..\..\3rd party\eax\Include;..\..\3rd party\boost;..\..\3rd party\dxsdk\Include\;$(WindowsSdkDir)include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\..\3rd party\dxsdk\Lib\;..\..\3rd party\OpenAL\libs\Win32;..\..\3rd party\eax;..\xrDXT\dds;..\..\libraries\Debug;..\..\libraries;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
