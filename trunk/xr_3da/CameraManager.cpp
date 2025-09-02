@@ -237,17 +237,23 @@ CEffectorPP* CCameraManager::GetPPEffector(EEffectorPPType type)
 
 ECamEffectorType   CCameraManager::RequestCamEffectorId ()
 {
-	for ( ECamEffectorType	index	=	(ECamEffectorType)effCustomEffectorStartID;
-							GetCamEffector(index);
-							index	=	(ECamEffectorType)(index+1) ) { ; }
+	ECamEffectorType index;
+	for (index = (ECamEffectorType)effCustomEffectorStartID;
+		GetCamEffector(index);
+		index = (ECamEffectorType)(index + 1)) {
+		;
+	}
 	return index;
 }
 
 EEffectorPPType   CCameraManager::RequestPPEffectorId ()
 {
-	for ( EEffectorPPType	index	=	(EEffectorPPType)effCustomEffectorStartID;
-							GetPPEffector(index);
-							index	=	(EEffectorPPType)(index+1) ) { ; }
+	EEffectorPPType index;
+	for (index = (EEffectorPPType)effCustomEffectorStartID;
+		GetPPEffector(index);
+		index = (EEffectorPPType)(index + 1)) {
+		;
+	}
 	return index;
 }
 
@@ -295,15 +301,15 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 	}
 #endif // DEBUG
 
-    bool bHasScriptedEffectors = false;
-    for (const auto& pEffector : m_EffectorsCam)
+	bool bHasScriptedEffectors = false;
+	for (const auto& pEffector : m_EffectorsCam)
 	{
-        if (pEffector->Valid() && pEffector->IsScripted())
+		if (pEffector->Valid() && pEffector->IsScripted())
 		{
 			bHasScriptedEffectors = true;
-            break;
-        }
-    }
+			break;
+		}
+	}
 
 	// camera
 	if (flags&CCameraBase::flPositionRigid || bHasScriptedEffectors)

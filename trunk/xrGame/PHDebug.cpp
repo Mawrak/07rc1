@@ -361,7 +361,6 @@ void DBG_PHAbstructRender()
 	}
 	if(dbg_ph_draw_mode!=dmCashed)
 	{
-		PHABS_DBG_I i,e;
 		i=dbg_draw_cashed.begin();e=dbg_draw_cashed.end();
 		for(;e!=i;++i)
 		{
@@ -373,7 +372,6 @@ void DBG_PHAbstructRender()
 		}
 	}
 	{
-		PHABS_DBG_I i,e;
 		i=dbg_draw_simple.begin();e=dbg_draw_simple.end();
 		for(;e!=i;++i)
 		{
