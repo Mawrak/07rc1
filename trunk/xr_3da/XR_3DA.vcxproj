@@ -200,6 +200,11 @@
       <LargeAddressAware>true</LargeAddressAware>
       <ImportLibrary>..\..\libraries\$(Platform)\$(Configuration)\$(ProjectName).lib</ImportLibrary>
     </Link>
+    <PostBuildEvent>
+      <Command>if not exist "$(TargetDir)eax.dll" (
+    xcopy /Y "$(SolutionDir)..\3rd party\eax\eax.dll" "$(TargetDir)"
+)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">
     <Midl>
@@ -253,6 +258,11 @@
       <TargetMachine>NotSet</TargetMachine>
       <FixedBaseAddress>false</FixedBaseAddress>
     </Link>
+    <PostBuildEvent>
+      <Command>if not exist "$(TargetDir)eax.dll" (
+    xcopy /Y "$(SolutionDir)..\3rd party\eax\eax.dll" "$(TargetDir)"
+)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl>
@@ -314,6 +324,11 @@
       <ImportLibrary>..\..\libraries\$(Platform)\$(Configuration)\$(ProjectName).lib</ImportLibrary>
       <FixedBaseAddress>false</FixedBaseAddress>
     </Link>
+    <PostBuildEvent>
+      <Command>if not exist "$(TargetDir)eax.dll" (
+    xcopy /Y "$(SolutionDir)..\3rd party\eax\eax.dll" "$(TargetDir)"
+)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Dedicated|Win32'">
     <Midl>
@@ -369,6 +384,11 @@
       <FixedBaseAddress>false</FixedBaseAddress>
       <ImportLibrary>..\..\libraries\$(Platform)\$(Configuration)\$(ProjectName).lib</ImportLibrary>
     </Link>
+    <PostBuildEvent>
+      <Command>if not exist "$(TargetDir)eax.dll" (
+    xcopy /Y "$(SolutionDir)..\3rd party\eax\eax.dll" "$(TargetDir)"
+)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Mixed_Dedicated|Win32'">
     <Midl>
@@ -421,6 +441,11 @@
       <FixedBaseAddress>false</FixedBaseAddress>
       <ImportLibrary>..\..\libraries\$(Platform)\$(Configuration)\$(ProjectName).lib</ImportLibrary>
     </Link>
+    <PostBuildEvent>
+      <Command>if not exist "$(TargetDir)eax.dll" (
+    xcopy /Y "$(SolutionDir)..\3rd party\eax\eax.dll" "$(TargetDir)"
+)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_Dedicated|Win32'">
     <Midl>
@@ -475,6 +500,11 @@
       <FixedBaseAddress>false</FixedBaseAddress>
       <ImportLibrary>..\..\libraries\$(Platform)\$(Configuration)\$(ProjectName).lib</ImportLibrary>
     </Link>
+    <PostBuildEvent>
+      <Command>if not exist "$(TargetDir)eax.dll" (
+    xcopy /Y "$(SolutionDir)..\3rd party\eax\eax.dll" "$(TargetDir)"
+)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="edit_actions.h" />
