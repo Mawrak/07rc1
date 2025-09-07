@@ -366,13 +366,13 @@
     <ClInclude Include="WaveForm.h">
       <Filter>Render\Execution &amp; 3D\Shaders</Filter>
     </ClInclude>
-    <ClInclude Include="Blenders\Blender.h">
+    <ClInclude Include="..\layers\blenders\Blender.h">
       <Filter>Render\Execution &amp; 3D\Shaders\Blender</Filter>
     </ClInclude>
-    <ClInclude Include="Blenders\Blender_CLSID.h">
+    <ClInclude Include="..\layers\blenders\Blender_CLSID.h">
       <Filter>Render\Execution &amp; 3D\Shaders\Blender</Filter>
     </ClInclude>
-    <ClInclude Include="Blenders\Blender_Recorder.h">
+    <ClInclude Include="..\layers\blenders\Blender_Recorder.h">
       <Filter>Render\Execution &amp; 3D\Shaders\Blender</Filter>
     </ClInclude>
     <ClInclude Include="tss.h">
@@ -746,13 +746,13 @@
     <ClCompile Include="xr_effgamma.cpp">
       <Filter>Render\Execution &amp; 3D\Gamma</Filter>
     </ClCompile>
-    <ClCompile Include="Blenders\Blender.cpp">
+    <ClCompile Include="..\layers\blenders\Blender.cpp">
       <Filter>Render\Execution &amp; 3D\Shaders\Blender</Filter>
     </ClCompile>
-    <ClCompile Include="Blenders\Blender_Palette.cpp">
+    <ClCompile Include="..\layers\blenders\Blender_Palette.cpp">
       <Filter>Render\Execution &amp; 3D\Shaders\Blender</Filter>
     </ClCompile>
-    <ClCompile Include="Blenders\Blender_Recorder.cpp">
+    <ClCompile Include="..\layers\blenders\Blender_Recorder.cpp">
       <Filter>Render\Execution &amp; 3D\Shaders\Blender</Filter>
     </ClCompile>
     <ClCompile Include="Blender_Recorder_R2.cpp">
