@@ -6,14 +6,19 @@ jobs:
   build:
     runs-on: windows-latest
 
+    env:
+      BASE_SHA: f0e211dbe3f46ef83ea1c
+
     strategy:
       matrix:
-        config: [Mixed, Release]
         platform: [Win32]
+        config: [Mixed_CI, Release_CI]
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1.3
@@ -25,17 +30,9 @@ jobs:
         run: nuget restore trunk/XR_3DA.sln
 
       - name: Build Engine ${{ matrix.platform }} ${{ matrix.config }}
+        shell: pwsh
         run: |
           msbuild trunk/XR_3DA.sln /m /p:Configuration=${{ matrix.config }} /p:Platform=${{ matrix.platform }}
-
-      - name: Collect Changed Resources
-        run: |
-          git fetch origin
-          mkdir changed_resources
-          for /f "tokens=*" %%i in ('git diff --name-only f0e211dbe3f46ef83ea1cd8578bd46da3a2f147c HEAD -- gamedata') do (
-            echo Adding %%i
-            xcopy "%%i" "changed_resources\%%i" /E /I /Y
-          )
 
       - name: Upload Engine Artifacts ${{ matrix.config }}
         uses: actions/upload-artifact@v4
@@ -46,8 +43,48 @@ jobs:
             **/Release/*
             **/Debug/*
 
+      # --------- собираем изменённые файлы только из gamedata ----------
+      - name: Collect Changed Resources
+        if: matrix.config == 'Mixed_CI'
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $outDir = "changed_resources"
+          if (Test-Path $outDir) { Remove-Item -Recurse -Force $outDir }
+          New-Item -ItemType Directory -Force -Path $outDir | Out-Null
+          
+          git fetch --prune --unshallow 2>$null; if ($LASTEXITCODE -ne 0) { git fetch --all --tags }
+          
+          $base = "${{ env.BASE_SHA }}"
+          git cat-file -e "$base^{commit}" 2>$null
+          if ($LASTEXITCODE -ne 0) {
+            git fetch origin
+            git cat-file -e "$base^{commit}" 2>$null
+            if ($LASTEXITCODE -ne 0) { exit 0 }
+          }
+          
+          $changed = git diff --name-only $base HEAD | Where-Object { $_ -like "gamedata/*" }
+          if (-not $changed -or $changed.Count -eq 0) {
+            Write-Host ("No gamedata files changed relative to {0}." -f $base)
+            exit 0
+          }
+          
+          foreach ($file in $changed) {
+            if (Test-Path $file) {
+              $dest = Join-Path $outDir $file
+              New-Item -ItemType Directory -Force -Path (Split-Path $dest -Parent) | Out-Null
+              Copy-Item -Path $file -Destination $dest -Force
+            }
+          }
+          
+          Write-Host ("Contents of {0}:" -f $outDir)
+          Get-ChildItem -Recurse $outDir | ForEach-Object { Write-Host $_.FullName }
+
       - name: Upload Changed Resources
+        if: matrix.config == 'Mixed_CI'
         uses: actions/upload-artifact@v4
         with:
-          name: resources-diff
+          name: gamedata
           path: changed_resources/**
+          if-no-files-found: ignore
+          
