@@ -1,0 +1,53 @@
+name: Build Engine
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    strategy:
+      matrix:
+        config: [Mixed, Release]
+        platform: [Win32]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1.3
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v1.2.0
+
+      - name: Restore NuGet packages
+        run: nuget restore trunk/XR_3DA.sln
+
+      - name: Build Engine ${{ matrix.platform }} ${{ matrix.config }}
+        run: |
+          msbuild trunk/XR_3DA.sln /m /p:Configuration=${{ matrix.config }} /p:Platform=${{ matrix.platform }}
+
+      - name: Collect Changed Resources
+        run: |
+          git fetch origin
+          mkdir changed_resources
+          for /f "tokens=*" %%i in ('git diff --name-only f0e211dbe3f46ef83ea1cd8578bd46da3a2f147c HEAD -- gamedata') do (
+            echo Adding %%i
+            xcopy "%%i" "changed_resources\%%i" /E /I /Y
+          )
+
+      - name: Upload Engine Artifacts ${{ matrix.config }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: engine-${{ matrix.platform }}-${{ matrix.config }}
+          path: |
+            **/bin/${{ matrix.config }}/*
+            **/Release/*
+            **/Debug/*
+
+      - name: Upload Changed Resources
+        uses: actions/upload-artifact@v4
+        with:
+          name: resources-diff
+          path: changed_resources/**
