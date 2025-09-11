@@ -560,7 +560,7 @@ CUIMiniMap::~CUIMiniMap()
 void CUIMiniMap::Init(shared_str name, CInifile& gameLtx, LPCSTR sh_name)
 {
 	inherited::Init(name, gameLtx, sh_name);
-	//CUIStatic::SetTextureColor(0x7fffffff);
+	CUIStatic::SetTextureColor(0x7fffffff);
 }
 
 void CUIMiniMap::UpdateSpots()
