@@ -176,9 +176,18 @@ void CHudItem::UpdateHudPosition	()
 		Fmatrix							trans;
 
 		CActor* pActor = smart_cast<CActor*>(object().H_Parent());
-		if(pActor){
-			pActor->Cameras().camera_Matrix				(trans);
-			UpdateHudInertion							(trans);
+		if (pActor)
+		{
+			if (psActorFlags.test(AF_WPN_BOBBING))
+			{
+				pActor->Cameras().affected_Matrix(trans);
+				UpdateHudInertion(trans, true);
+			}
+			else
+			{
+				pActor->Cameras().camera_Matrix(trans);
+				UpdateHudInertion(trans);
+			}
 			UpdateHudAdditonal							(trans);
 			m_pHUD->UpdatePosition						(trans);
 		}
@@ -204,40 +213,50 @@ static const float PITCH_OFFSET_D	= 0.02f;
 static const float ORIGIN_OFFSET	= -0.05f;
 static const float TENDTO_SPEED		= 5.f;
 
-void CHudItem::UpdateHudInertion		(Fmatrix& hud_trans)
+void CHudItem::UpdateHudInertion		(Fmatrix& hud_trans, bool bobbing)
 {
-	if (m_pHUD && m_bInertionAllow && m_bInertionEnable){
-		Fmatrix								xform;//,xform_orig; 
-		Fvector& origin						= hud_trans.c; 
-		xform								= hud_trans;
-
-		static Fvector						m_last_dir={0,0,0};
-
-		// calc difference
-		Fvector								diff_dir;
-		diff_dir.sub						(xform.k, m_last_dir);
-
-		// clamp by PI_DIV_2
-		Fvector last;						last.normalize_safe(m_last_dir);
-		float dot							= last.dotproduct(xform.k);
-		if (dot<EPS){
-			Fvector v0;
-			v0.crossproduct			(m_last_dir,xform.k);
-			m_last_dir.crossproduct	(xform.k,v0);
-			diff_dir.sub			(xform.k, m_last_dir);
+	CActor* pActor = smart_cast<CActor*>(object().H_Parent());
+	if (pActor && m_pHUD && m_bInertionAllow && m_bInertionEnable)
+	{
+		Fmatrix								xform;
+		if (bobbing)
+		{
+			pActor->Cameras().unaffected_Matrix(xform);
 		}
+		else
+		{
+			Fvector& origin = hud_trans.c;
+			pActor->Cameras().camera_Matrix(xform);
 
-		// tend to forward
-		m_last_dir.mad	(diff_dir,TENDTO_SPEED*Device.fTimeDelta);
-		origin.mad		(diff_dir,ORIGIN_OFFSET);
+			static Fvector						m_last_dir = { 0, 0, 0 };
 
-		// pitch compensation
-		float pitch		= angle_normalize_signed(xform.k.getP());
-		origin.mad		(xform.k,	-pitch * PITCH_OFFSET_D);
-		origin.mad		(xform.i,	-pitch * PITCH_OFFSET_R);
-		origin.mad		(xform.j,	-pitch * PITCH_OFFSET_N);
+			// calc difference
+			Fvector								diff_dir;
+			diff_dir.sub(xform.k, m_last_dir);
 
-		// calc moving inertion
+			// clamp by PI_DIV_2
+			Fvector last;						last.normalize_safe(m_last_dir);
+			float dot = last.dotproduct(xform.k);
+			if (dot < EPS)
+			{
+				Fvector v0;
+				v0.crossproduct(m_last_dir, xform.k);
+				m_last_dir.crossproduct(xform.k, v0);
+				diff_dir.sub(xform.k, m_last_dir);
+			}
+
+			// tend to forward
+			m_last_dir.mad(diff_dir, TENDTO_SPEED * Device.fTimeDelta);
+			origin.mad(diff_dir, ORIGIN_OFFSET);
+
+			// pitch compensation
+			float pitch = angle_normalize_signed(xform.k.getP());
+			origin.mad(xform.k, -pitch * PITCH_OFFSET_D);
+			origin.mad(xform.i, -pitch * PITCH_OFFSET_R);
+			origin.mad(xform.j, -pitch * PITCH_OFFSET_N);
+
+			// calc moving inertion
+		}
 	}
 }
 
