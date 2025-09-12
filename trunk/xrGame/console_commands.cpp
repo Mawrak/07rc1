@@ -1609,7 +1609,6 @@ public:
 };
 
 extern float psBobMult;
-extern float psWpnBobMult;
 
 void CCC_RegisterCommands()
 {
@@ -1627,7 +1626,6 @@ void CCC_RegisterCommands()
 	CMD3(CCC_Mask,				"weapon_bobbing",		&psActorFlags,	AF_WPN_BOBBING);
 
 	CMD4(CCC_Float,				"bobbing_mult",			&psBobMult,		0.0f,	2.0f);
-	CMD4(CCC_Float,				"weapon_bobbing_mult",	&psWpnBobMult,	0.0f,	2.0f);
 
 	// alife
 #ifdef DEBUG
