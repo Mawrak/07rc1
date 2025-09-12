@@ -258,7 +258,7 @@ void CLocatorAPI::Register		(LPCSTR name, u32 vfs, u32 crc, u32 ptr, u32 size_re
 	}
 }
 
-IReader* open_chunk(void* ptr, u32 ID, pcstr archiveName, u32 archiveSize)
+IReader* open_chunk(void* ptr, u32 ID, LPCSTR archiveName, u32 archiveSize)
 {
 	BOOL			res;
 	u32				dwType, dwSize;
