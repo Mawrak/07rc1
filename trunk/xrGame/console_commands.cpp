@@ -1695,6 +1695,7 @@ void CCC_RegisterCommands()
 	CMD3(CCC_Mask,				"ai_dbg_frustum",		&psAI_Flags,	aiFrustum);
 	CMD3(CCC_Mask,				"ai_dbg_funcs",			&psAI_Flags,	aiFuncs);
 	CMD3(CCC_Mask,				"ai_dbg_alife",			&psAI_Flags,	aiALife);
+	CMD3(CCC_Mask,				"ai_dbg_onoffline",		&psAI_Flags,	aiOnlineOffline);
 	CMD3(CCC_Mask,				"ai_dbg_lua",			&psAI_Flags,	aiLua);
 	CMD3(CCC_Mask,				"ai_dbg_goap",			&psAI_Flags,	aiGOAP);
 	CMD3(CCC_Mask,				"ai_dbg_goap_script",	&psAI_Flags,	aiGOAPScript);

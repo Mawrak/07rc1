@@ -44,4 +44,5 @@
 #	define aiDebugOnFrameAllocs			(1<<25)
 #	define aiDrawVisibilityRays			(1<<26)
 #	define aiAnimationStats				(1<<27)
+#	define aiOnlineOffline				(1<<28)
 #endif // DEBUG
