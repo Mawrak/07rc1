@@ -35,10 +35,10 @@
 #	define aiNilObjectAccess			(1<<23)
 #endif // DEBUG
 
-#ifndef MASTER_GOLD
+//#ifndef MASTER_GOLD
 #	define aiIgnoreActor				(1<<24)
 	extern Flags32						psAI_Flags;
-#endif // MASTER_GOLD
+//#endif // MASTER_GOLD
 
 #ifdef DEBUG
 #	define aiDebugOnFrameAllocs			(1<<25)

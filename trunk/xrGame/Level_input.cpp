@@ -171,8 +171,9 @@ void CLevel::IR_OnKeyboardPress	(int key)
 		return;
 	}
 
-#ifndef MASTER_GOLD
-	switch (key) {
+//#ifndef MASTER_GOLD
+	switch (key)
+	{
 	case DIK_NUMPAD5: 
 		{
 			if (GameID() != GAME_SINGLE) 
@@ -180,12 +181,19 @@ void CLevel::IR_OnKeyboardPress	(int key)
 				Msg("For this game type Demo Record is disabled.");
 ///				return;
 			};
-			Console->Hide	();
-			Console->Execute("demo_record 1");
+			if (!pInput->iGetAsyncKeyState(DIK_LSHIFT))
+			{
+				Console->Hide();
+				Console->Execute("demo_record 1");
+				return;
+			}
 		}
 		break;
-#endif // MASTER_GOLD
+	}
+//#endif // MASTER_GOLD
 #ifdef DEBUG
+	switch (key)
+	{
 	case DIK_RETURN:
 			bDebug	= !bDebug;
 		return;
