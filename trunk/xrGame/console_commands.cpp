@@ -37,6 +37,7 @@
 #include "zone_effector.h"
 #include "GameTask.h"
 #include "MainMenu.h"
+#include "HudItem.h"
 #include "saved_game_wrapper.h"
 #include "level_graph.h"
 #include "../xr_3da/ResourceManager.h"
@@ -183,6 +184,20 @@ public:
 	virtual void	Info	(TInfo& I)		
 	{
 		strcpy_s(I,"game difficulty"); 
+	}
+};
+
+class CCC_BobbingMode : public CCC_Token
+{
+public:
+	CCC_BobbingMode(LPCSTR N) : CCC_Token(N,(u32*)&g_BobbingMode,bobbing_mode_token)  {};
+	virtual void Execute(LPCSTR args)
+	{
+		CCC_Token::Execute(args);
+	}
+	virtual void	Info	(TInfo& I)
+	{
+		strcpy_s(I,"bobbing/inertion mode");
 	}
 };
 
@@ -1618,12 +1633,11 @@ void CCC_RegisterCommands()
 	CMD1(CCC_MemStats,			"stat_memory"			);
 	// game
 	psActorFlags.set(AF_ALWAYSRUN, true);
-	psActorFlags.set(AF_WPN_BOBBING, false);
 	CMD3(CCC_Mask,				"g_always_run",			&psActorFlags,	AF_ALWAYSRUN);
 	CMD1(CCC_GameDifficulty,	"g_game_difficulty"		);
+	CMD1(CCC_BobbingMode,		"g_bobbing_mode"		);
 
 	CMD3(CCC_Mask,				"g_backrun",			&psActorFlags,	AF_RUN_BACKWARD);
-	CMD3(CCC_Mask,				"weapon_bobbing",		&psActorFlags,	AF_WPN_BOBBING);
 
 	CMD4(CCC_Float,				"bobbing_mult",			&psBobMult,		0.0f,	2.0f);
 
