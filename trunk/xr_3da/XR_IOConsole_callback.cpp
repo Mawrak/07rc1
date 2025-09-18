@@ -39,6 +39,7 @@ void CConsole::Register_callbacks()
 	
 	ec().assign_callback( DIK_ESCAPE, text_editor::ks_free, Callback( this, &CConsole::Hide_cmd_esc ) );
 	ec().assign_callback( DIK_GRAVE,  text_editor::ks_free, Callback( this, &CConsole::Hide_cmd     ) );
+	ec().assign_callback( DIK_F1,  text_editor::ks_free, Callback( this, &CConsole::Show_help     ) );
 }
 
 void CConsole::Prev_log() // DIK_PRIOR=PAGE_UP
@@ -195,6 +196,11 @@ void CConsole::Show_cmd()
 void CConsole::Hide_cmd()
 {
 	Hide();
+}
+
+void CConsole::Show_help()
+{
+	m_bShownHelp = !m_bShownHelp;
 }
 
 void CConsole::Hide_cmd_esc()

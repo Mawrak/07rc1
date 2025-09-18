@@ -91,6 +91,7 @@ CConsole::CConsole()
 	m_disable_tips = false;
 	Register_callbacks();
 	Device.seqResolutionChanged.Add(this);
+	m_bShownHelp = false;
 }
 
 void CConsole::Initialize()
@@ -99,6 +100,7 @@ void CConsole::Initialize()
 	bVisible			= false;
 	pFont				= NULL;
 	pFont2				= NULL;
+	pFontHelp			= NULL;
 	m_mouse_pos.x		= 0;
 	m_mouse_pos.y		= 0;
 	m_last_cmd			= NULL;
@@ -138,6 +140,7 @@ void CConsole::Destroy()
 
 	xr_delete(pFont);
 	xr_delete(pFont2);
+	xr_delete(pFontHelp);
 
 	Commands.clear();
 }
@@ -206,6 +209,7 @@ void CConsole::OnScreenResolutionChanged()
 {
 	xr_delete(pFont);
 	xr_delete(pFont2);
+	xr_delete(pFontHelp);
 }
 
 void CConsole::OnRender	()
@@ -223,6 +227,13 @@ void CConsole::OnRender	()
 	{
 		pFont2 = xr_new<CGameFont>("hud_font_di2", CGameFont::fsDeviceIndependent, false);
 		pFont2->SetHeightI(0.025f);
+	}
+	if (!pFontHelp)
+	{
+		pFontHelp = xr_new<CGameFont>("hud_font_di", CGameFont::fsDeviceIndependent, false);
+		pFontHelp->SetHeightI(0.025f);
+		pFontHelp->SetColor(color_rgba(255, 255, 255, 255));
+		pFontHelp->SetAligment(CGameFont::alRight);
 	}
 	if(!ConsoleShader)
 	{
@@ -357,6 +368,20 @@ void CConsole::OnRender	()
 		
 	pFont->OnRender();
 	pFont2->OnRender();
+	if (!m_bShownHelp)
+	{
+		pFontHelp->OutI(0.99f, -0.95f, "F1 for help");
+	}
+	else
+	{
+		pFontHelp->OutI(0.99f, -0.95f, "Page Up/Down to scroll log, hold Ctrl to jump to begin/end");
+		pFontHelp->OutI(0.99f, -0.90f, "Tab to autocomplete, hold LShift to cycle backward");
+		pFontHelp->OutI(0.99f, -0.85f, "Up/Down arrow to select tip, hold Ctrl to browse command history");
+		pFontHelp->OutI(0.99f, -0.80f, "Alt+Home/End to go to first/last tip");
+		pFontHelp->OutI(0.99f, -0.75f, "Alt+Page Up/Down to page the tips list");
+		pFontHelp->OutI(0.99f, -0.70f, "Enter or Numpad Enter to execute command");
+	}
+	pFontHelp->OnRender();
 }
 
 void CConsole::DrawBackgrounds( bool bGame )
@@ -657,7 +682,7 @@ void CConsole::Hide()
 	reset_cmd_history_idx();
 	reset_selected_tip();
 	update_tips();
-
+	m_bShownHelp = false;
 	Device.seqRender.Remove(this);
 	Device.seqFrame.Remove(this);
 	m_editor->IR_Release();
