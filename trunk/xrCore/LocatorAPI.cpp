@@ -277,9 +277,15 @@ IReader* open_chunk(void* ptr, u32 ID, LPCSTR archiveName, u32 archiveSize)
 				BYTE* dest = nullptr;
                 unsigned dest_sz = 0;
 
-				g_trivial_encryptor.decode(src_data, dwSize, src_data);
+				// First of all - try to decompress it like as there's no key - APAmk2
+				bool result = _decompressLZ(&dest, &dest_sz, src_data, dwSize, archiveSize);
 
-                bool result = _decompressLZ(&dest, &dest_sz, src_data, dwSize, archiveSize);
+				if (!result)
+				{
+					// Let's try to decode with WW key
+					g_trivial_encryptor.decode(src_data, dwSize, src_data);
+					result = _decompressLZ(&dest, &dest_sz, src_data, dwSize, archiveSize);
+				}
 
                 if (!result)
                 {
