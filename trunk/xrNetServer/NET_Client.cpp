@@ -237,7 +237,7 @@ void			INetQueue::Release	()
 
 //
 const u32 syncQueueSize		= 512;
-const int syncSamples		= 256;
+const int syncSamples		= 6;
 class XRNETSERVER_API syncQueue
 {
 	u32				table	[syncQueueSize];
@@ -1085,6 +1085,7 @@ void	IPureClient::Sync_Thread	()
 			u32	timeBegin	= TimerAsync(device_timer);
 			while ((net_DeltaArray.size()==old_size)&&(TimerAsync(device_timer)-timeBegin<5000))		Sleep(1);
 			
+			Msg("net_DeltaArray.size() [%d]", net_DeltaArray.size());
 			if (net_DeltaArray.size()>=syncSamples)	{
 				net_Syncronised	= TRUE;
 				net_TimeDelta	= net_TimeDelta_Calculated;
